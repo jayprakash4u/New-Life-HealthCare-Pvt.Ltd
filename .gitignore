@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.npm-cache/
+coverage/
+*.tsbuildinfo
+.env*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+docs/design-system.css
+.admin-data/

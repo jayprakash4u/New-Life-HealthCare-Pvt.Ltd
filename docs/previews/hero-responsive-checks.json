@@ -1,0 +1,122 @@
+[
+  {
+    "width": 320,
+    "height": 568,
+    "cardColumns": 2,
+    "controlOverflow": false,
+    "formColumns": 1,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 375,
+    "height": 667,
+    "cardColumns": 2,
+    "controlOverflow": false,
+    "formColumns": 1,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "cardColumns": 2,
+    "controlOverflow": false,
+    "formColumns": 1,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 480,
+    "height": 800,
+    "cardColumns": 3,
+    "controlOverflow": false,
+    "formColumns": 1,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 640,
+    "height": 900,
+    "cardColumns": 3,
+    "controlOverflow": false,
+    "formColumns": 2,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "cardColumns": 3,
+    "controlOverflow": false,
+    "formColumns": 2,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "cardColumns": 3,
+    "controlOverflow": false,
+    "formColumns": 2,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 1024,
+    "height": 768,
+    "cardColumns": 3,
+    "controlOverflow": false,
+    "formColumns": 3,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "cardColumns": 6,
+    "controlOverflow": false,
+    "formColumns": 3,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "cardColumns": 6,
+    "controlOverflow": false,
+    "formColumns": 3,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 1920,
+    "height": 1080,
+    "cardColumns": 6,
+    "controlOverflow": false,
+    "formColumns": 3,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  },
+  {
+    "width": 2560,
+    "height": 1440,
+    "cardColumns": 6,
+    "controlOverflow": false,
+    "formColumns": 3,
+    "headingOverflow": false,
+    "pageOverflow": false,
+    "pauseOverlap": false
+  }
+]

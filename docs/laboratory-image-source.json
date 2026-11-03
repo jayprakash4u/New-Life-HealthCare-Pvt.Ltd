@@ -1,0 +1,103 @@
+{
+  "pageid": 113390282,
+  "ns": 6,
+  "title": "File:Кров людини.jpg",
+  "index": 3,
+  "imagerepository": "local",
+  "imageinfo": [
+    {
+      "thumburl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg/500px-%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "thumbwidth": 500,
+      "thumbheight": 375,
+      "responsiveUrls": {
+        "2": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg/1280px-%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+      },
+      "thumbattribs": {
+        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg/500px-%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+        "decoding": "async",
+        "loading": "lazy",
+        "width": 500,
+        "height": 375,
+        "srcset": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg/1280px-%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail 2x"
+      },
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/98/%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "descriptionurl": "https://commons.wikimedia.org/wiki/File:%D0%9A%D1%80%D0%BE%D0%B2_%D0%BB%D1%8E%D0%B4%D0%B8%D0%BD%D0%B8.jpg",
+      "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=113390282",
+      "extmetadata": {
+        "DateTime": {
+          "value": "2021-12-15 20:58:51",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Кров людини",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Red blood cells|Blood|Taken with Zeiss AxioCam HR|Histology|Blood cells|Self-published work|Uploaded via Campaign:espc-ua|Images from Wiki Science Competition 2021 in Ukraine|Microscopy images from Wiki Science Competition in Ukraine 2021",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Normal peripheral blood smear. The photomicrograph shows the general morphology of the formed elements of the blood. Microphotographs of sections were obtained in the Schmalhausen Institute of Zoology, NAS of Ukraine, using microscope Zeiss Axio Imager M1 and software Zeiss AxioVision v.4.63.",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2019-11-21 20:44:39",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:SlavaSSG&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:SlavaSSG (page does not exist)\">Степанюк Ярослав|Борис Максим</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      }
+    }
+  ]
+}

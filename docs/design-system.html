@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>New Life — Design foundation</title>
+    <link rel="stylesheet" href="./design-system.css" />
+    <style>
+      .board {
+        max-width: 1100px;
+        padding: clamp(24px, 5vw, 64px);
+        margin: auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid var(--color-border);
+      }
+      header img {
+        width: 170px;
+        height: auto;
+      }
+      .eyebrow {
+        color: var(--color-primary);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: var(--text-3xl);
+        margin-bottom: 16px;
+      }
+      h2 {
+        font-size: var(--text-xl);
+        margin-bottom: 24px;
+      }
+      .muted {
+        color: var(--color-text-muted);
+        max-width: 52ch;
+      }
+      section {
+        padding-block: 32px;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .swatch {
+        overflow: hidden;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+      }
+      .chip {
+        height: 88px;
+        background: var(--swatch);
+      }
+      .swatch p {
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+      .swatch span {
+        display: block;
+        color: var(--color-text-muted);
+        font-size: 13px;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .two {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+      .type-heading {
+        font-size: var(--text-2xl);
+        margin-bottom: 12px;
+      }
+      .status {
+        padding: 8px 14px;
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      footer {
+        padding-top: 24px;
+        color: var(--color-text-muted);
+        font-size: 14px;
+      }
+      @media (max-width: 600px) {
+        header {
+          align-items: flex-start;
+          flex-direction: column-reverse;
+        }
+        header img {
+          width: 110px;
+        }
+        .swatches,
+        .two {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header>
+        <div>
+          <p class="eyebrow">New Life Health Care / Foundation 01</p>
+          <h1>Clarity. Care. Confidence.</h1>
+          <p class="muted">
+            A calm visual language drawn from your logo. Shared foundations for
+            a consistent, professional healthcare experience.
+          </p>
+        </div>
+        <img
+          src="../public/brand/new-life-health-care.png"
+          alt="New Life Health Care Pvt. Ltd. original logo"
+          width="599"
+          height="416"
+        />
+      </header>
+      <section aria-labelledby="palette">
+        <h2 id="palette">01 / Color palette</h2>
+        <div class="swatches">
+          <div class="swatch">
+            <div class="chip" style="--swatch: var(--brand-teal)"></div>
+            <p>Brand teal <span>#26998D · Brand accents</span></p>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="--swatch: var(--color-primary)"></div>
+            <p>Action teal <span>#14776E · Buttons and links</span></p>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="--swatch: var(--brand-slate)"></div>
+            <p>Brand slate <span>#778393 · Secondary brand color</span></p>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="--swatch: var(--color-text)"></div>
+            <p>Deep ink <span>#1C3034 · Main text</span></p>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="--swatch: var(--color-primary-soft)"></div>
+            <p>Soft teal <span>#EAF6F3 · Quiet emphasis</span></p>
+          </div>
+          <div class="swatch">
+            <div class="chip" style="--swatch: var(--color-surface)"></div>
+            <p>Cloud <span>#F6F9F8 · Subtle surfaces</span></p>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="typography">
+        <h2 id="typography">02 / Typography</h2>
+        <div class="two">
+          <div>
+            <h3 class="type-heading">Clear at every step.</h3>
+            <p class="muted">
+              Comfortable body text, a restrained heading scale, and enough
+              space to make information easy to read.
+            </p>
+          </div>
+          <div>
+            <p style="font-weight: 600">
+              System sans · Segoe UI / Helvetica Neue / Arial
+            </p>
+            <p class="muted">
+              Body 16px / Labels 14px<br />Headings 28–56px / Weights 400, 500,
+              600, 700<br />Spacing built on a 4px rhythm.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="buttons">
+        <h2 id="buttons">03 / Button language</h2>
+        <p class="muted">
+          Style samples. Use Tab to inspect keyboard focus; hover or press to
+          inspect interaction states.
+        </p>
+        <div class="row">
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 bg-action text-on-action hover:bg-action-hover active:bg-action-active px-5 py-3"
+          >
+            Primary action
+          </button>
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 bg-soft text-action hover:bg-soft-hover px-5 py-3"
+          >
+            Secondary
+          </button>
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 border-action text-action hover:bg-soft px-5 py-3"
+          >
+            Outline
+          </button>
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 text-action hover:bg-soft px-5 py-3"
+          >
+            Quiet action
+          </button>
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 bg-negative text-on-action hover:bg-negative-hover px-5 py-3"
+          >
+            Delete item
+          </button>
+        </div>
+        <div class="row">
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 bg-action text-on-action hover:bg-action-hover active:bg-action-active px-4 py-2"
+          >
+            Small
+          </button>
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 bg-action text-on-action hover:bg-action-hover active:bg-action-active min-h-13 px-6 py-4 text-base"
+          >
+            Large action
+          </button>
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 bg-action text-on-action hover:bg-action-hover active:bg-action-active px-5 py-3"
+            disabled
+          >
+            Disabled
+          </button>
+          <button
+            type="button"
+            class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-transparent text-sm leading-tight font-semibold transition-colors disabled:pointer-events-none disabled:opacity-50 bg-action text-on-action hover:bg-action-hover active:bg-action-active px-5 py-3"
+            disabled
+            aria-busy="true"
+          >
+            <span
+              class="size-[1em] animate-spin rounded-full border-2 border-current border-r-transparent motion-reduce:animate-none"
+              aria-hidden="true"
+            ></span
+            >Saving
+          </button>
+        </div>
+      </section>
+      <section aria-labelledby="forms">
+        <h2 id="forms">04 / Form controls</h2>
+        <div class="two">
+          <div class="grid gap-2">
+            <label class="text-sm font-semibold" for="sample-name"
+              >Full name (required)</label
+            >
+            <p class="text-sm text-muted" id="name-hint">
+              As shown on your records.
+            </p>
+            <input
+              class="min-h-11 w-full rounded-md border border-input bg-raised px-4 py-3 text-ink placeholder:text-muted aria-invalid:border-negative"
+              id="sample-name"
+              placeholder="Enter your full name"
+              aria-describedby="name-hint"
+              autocomplete="name"
+              required
+            />
+          </div>
+          <div class="grid gap-2">
+            <label class="text-sm font-semibold" for="sample-email"
+              >Email address</label
+            >
+            <input
+              class="min-h-11 w-full rounded-md border border-input bg-raised px-4 py-3 text-ink placeholder:text-muted aria-invalid:border-negative"
+              id="sample-email"
+              type="email"
+              value="example@"
+              aria-invalid="true"
+              aria-describedby="email-error"
+              autocomplete="email"
+            />
+            <p class="text-sm text-negative" id="email-error">
+              Enter a valid email address.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="feedback">
+        <h2 id="feedback">05 / Feedback colors</h2>
+        <div class="row">
+          <span
+            class="status"
+            style="
+              color: var(--color-success);
+              background: var(--color-success-soft);
+            "
+            >Success · Saved</span
+          >
+          <span
+            class="status"
+            style="
+              color: var(--color-warning);
+              background: var(--color-warning-soft);
+            "
+            >Warning · Review needed</span
+          >
+          <span
+            class="status"
+            style="
+              color: var(--color-danger);
+              background: var(--color-danger-soft);
+            "
+            >Error · Check details</span
+          >
+          <span
+            class="status"
+            style="color: var(--color-info); background: var(--color-info-soft)"
+            >Info · Helpful guidance</span
+          >
+        </div>
+      </section>
+      <footer>
+        Design reference only · Shared CSS tokens and primitive styles · Website
+        pages have not been started.
+      </footer>
+    </main>
+  </body>
+</html>

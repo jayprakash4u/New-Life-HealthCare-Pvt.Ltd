@@ -1,0 +1,124 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+@theme inline {
+  --color-action: var(--color-primary);
+  --color-action-hover: var(--color-primary-hover);
+  --color-action-active: var(--color-primary-active);
+  --color-accent: var(--color-copper);
+  --color-accent-strong: var(--color-copper-strong);
+  --color-accent-hover: var(--color-copper-hover);
+  --color-accent-active: var(--color-copper-active);
+  --color-accent-soft: var(--color-copper-soft);
+  --color-on-accent: var(--color-on-copper);
+  --color-on-action: var(--color-on-primary);
+  --color-brand: var(--brand-teal);
+  --color-slate-brand: var(--brand-slate);
+  --color-soft: var(--color-primary-soft);
+  --color-soft-hover: var(--color-primary-soft-hover);
+  --color-canvas: var(--color-background);
+  --color-panel: var(--color-surface);
+  --color-raised: var(--color-surface-raised);
+  --color-ink: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-line: var(--color-border);
+  --color-input: var(--color-input-border);
+  --color-focus: var(--color-primary);
+  --color-negative: var(--color-danger);
+  --color-negative-hover: var(--color-danger-hover);
+  --color-negative-soft: var(--color-danger-soft);
+  --color-positive: var(--color-success);
+  --color-positive-soft: var(--color-success-soft);
+  --color-caution: var(--color-warning);
+  --color-caution-soft: var(--color-warning-soft);
+  --color-information: var(--color-info);
+  --color-information-soft: var(--color-info-soft);
+}
+
+@theme {
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-heading);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-underline-offset: 0.2em;
+  }
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-primary-soft-hover);
+    color: var(--color-text);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
