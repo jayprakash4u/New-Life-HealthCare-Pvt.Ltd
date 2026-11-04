@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { listRecords, usesDatabase, writeRecord } from './admin-database';
 
-export type HomepageKind = 'blog' | 'video' | 'section';
+export type HomepageKind = 'blog' | 'video' | 'doctor' | 'section';
 const directory = path.resolve(
   process.env.ADMIN_DATA_DIR ?? '.admin-data',
   'homepage',

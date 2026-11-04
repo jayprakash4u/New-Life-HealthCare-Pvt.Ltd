@@ -5,6 +5,7 @@ export const homepageSections = [
     href: '/admin/pages/home',
     required: true,
   },
+  { id: 'doctors', label: 'Our Doctors', href: '/admin/library/team' },
   {
     id: 'introduction',
     label: 'Clinic introduction',

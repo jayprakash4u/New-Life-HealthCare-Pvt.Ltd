@@ -263,12 +263,14 @@ export async function addDoctor(fromDoctors: boolean, form: FormData) {
     redirect(url + '?add=1&status=error');
   }
   try {
-    await saveLibraryItem('team', randomUUID(), {
+    const id = randomUUID();
+    await saveLibraryItem('team', id, {
       title,
       detail,
       image: await storeImage(upload),
       doctor: { careId, interests },
     });
+    await setHomepageVisibility('doctor', id, form.get('homepage') === 'on');
   } catch {
     redirect(url + '?add=1&status=error');
   }
@@ -282,20 +284,22 @@ export async function updateHomepageVisibility(
   form: FormData,
 ) {
   await requireAdmin();
-  if (kind !== 'blog' && kind !== 'video' && kind !== 'section')
+  if (!['blog', 'video', 'doctor', 'section'].includes(kind))
     redirect('/admin');
   const url =
     kind === 'section'
       ? '/admin/home'
       : kind === 'blog'
         ? '/admin/blogs'
-        : '/admin/library/videos';
+        : kind === 'doctor'
+          ? '/admin/library/team'
+          : '/admin/library/videos';
   const items =
     kind === 'section'
       ? homepageSections.filter((section) => !('required' in section))
       : kind === 'blog'
         ? await getPublishedArticles()
-        : await getLibraryItems('videos');
+        : await getLibraryItems(kind === 'doctor' ? 'team' : 'videos');
   if (!items.some((item) => item.id === id)) redirect(url);
   try {
     await setHomepageVisibility(kind, id, form.get('homepage') === 'on');

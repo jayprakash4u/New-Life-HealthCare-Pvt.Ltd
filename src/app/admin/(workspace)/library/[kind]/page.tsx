@@ -35,9 +35,9 @@ export default async function LibraryPage({
     searchParams,
   ]);
   const visibility =
-    kind === 'videos'
+    kind === 'videos' || kind === 'team'
       ? await getHomepageVisibility(
-          'video',
+          kind === 'team' ? 'doctor' : 'video',
           items.map(({ id }) => id),
         )
       : undefined;
@@ -51,7 +51,9 @@ export default async function LibraryPage({
             {fromDoctors ? 'Doctors' : labels[kind]}
           </h1>
           <p className="mt-2 text-sm text-muted">
-            Manage the items shown on the public website.
+            {kind === 'team'
+              ? 'Add doctor profiles and choose which doctors appear in the homepage Our Doctors section.'
+              : 'Manage the items shown on the public website.'}
           </p>
         </div>
         <Link
@@ -130,6 +132,17 @@ export default async function LibraryPage({
               accept="image/jpeg,image/png,image/webp"
             />
           </label>
+          <div className="flex items-center gap-4">
+            <label className="inline-flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                name="homepage"
+                defaultChecked
+                className="size-4 accent-action"
+              />
+              Show on homepage
+            </label>
+          </div>
           <div className="flex items-center gap-4">
             <Button type="submit">Publish doctor</Button>
             <Link href={url} className="text-sm text-action underline">
@@ -211,9 +224,9 @@ export default async function LibraryPage({
                 <p className="font-medium">{item.title}</p>
                 <p className="mt-1 text-sm text-muted">{item.detail}</p>
               </div>
-              {kind === 'videos' && (
+              {(kind === 'videos' || kind === 'team') && (
                 <HomepageCheckbox
-                  kind="video"
+                  kind={kind === 'team' ? 'doctor' : 'video'}
                   id={item.id}
                   title={item.title}
                   visible={visibility?.get(item.id) ?? true}

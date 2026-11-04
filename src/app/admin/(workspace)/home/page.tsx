@@ -10,6 +10,10 @@ const previews = {
     image: '/brand/hero-poster.jpg',
     description: 'Hero headline and appointment form.',
   },
+  doctors: {
+    image: null,
+    description: 'Doctor portraits, profiles, and appointment links.',
+  },
   introduction: {
     image: '/brand/hero-poster.jpg',
     description: 'Clinic introduction, background photo, and clinic figures.',
@@ -120,9 +124,11 @@ export default async function AdminHome({
                   href={section.href}
                   className="text-sm font-medium text-action underline underline-offset-4"
                 >
-                  {section.id === 'blog' || section.id === 'videos'
-                    ? 'Manage items'
-                    : 'Edit content'}
+                  {section.id === 'doctors'
+                    ? 'Manage doctors'
+                    : section.id === 'blog' || section.id === 'videos'
+                      ? 'Manage items'
+                      : 'Edit content'}
                 </Link>
               )}
             </div>

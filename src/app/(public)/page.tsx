@@ -7,6 +7,7 @@ import { ClinicIntroduction } from '@/components/home/clinic-introduction';
 import { LifeAtNewLife } from '@/components/home/life-at-new-life';
 import { WhyChooseUs } from '@/components/home/why-choose-us';
 import { HomeFaq } from '@/components/home/home-faq';
+import { OurDoctors } from '@/components/about/our-doctors';
 
 export default async function Home() {
   const [copy, articles] = await Promise.all([
@@ -27,6 +28,7 @@ export default async function Home() {
   return (
     <>
       <HeroSection copy={copy} />
+      {sections.get('doctors') !== false && <OurDoctors homepage />}
       {sections.get('introduction') !== false && <ClinicIntroduction />}
       {sections.get('videos') !== false && <LifeAtNewLife />}
       {sections.get('why-choose-us') !== false && <WhyChooseUs />}
