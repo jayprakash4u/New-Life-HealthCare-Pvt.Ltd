@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HealthJournal } from '@/components/home/health-journal';
 import { LifeAtNewLife } from '@/components/home/life-at-new-life';

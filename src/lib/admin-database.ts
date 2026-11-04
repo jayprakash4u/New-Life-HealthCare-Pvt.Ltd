@@ -16,9 +16,7 @@ async function database() {
     );
   }
   const local = ['127.0.0.1', 'localhost', '::1'].includes(DB_HOST);
-  const development =
-    process.env.NODE_ENV === 'development' &&
-    process.env.DB_DEV_SELF_SIGNED === '1';
+  const allowSelfSigned = process.env.DB_DEV_SELF_SIGNED === '1';
   pool ??= mysql.createPool({
     host: DB_HOST,
     port: Number(DB_PORT ?? 3306),
@@ -32,7 +30,10 @@ async function database() {
     enableKeepAlive: true,
     ssl: local
       ? undefined
-      : { rejectUnauthorized: !development, verifyIdentity: !development },
+      : {
+          rejectUnauthorized: !allowSelfSigned,
+          verifyIdentity: !allowSelfSigned,
+        },
   });
   initialized ??= pool
     .query(

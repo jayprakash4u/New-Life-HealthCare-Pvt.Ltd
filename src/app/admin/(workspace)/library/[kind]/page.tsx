@@ -16,7 +16,11 @@ import {
 import { treatments } from '@/config/treatments';
 import { addDoctor, updateLibraryItem } from '../../../actions';
 
-const labels = { gallery: 'Gallery', team: 'Our Team', videos: 'Videos' };
+const labels = {
+  gallery: 'Photo Gallery',
+  team: 'Doctors & Specialists',
+  videos: 'Video Showcase',
+};
 
 export default async function LibraryPage({
   params,
@@ -43,69 +47,127 @@ export default async function LibraryPage({
       : undefined;
   const selected = items.find(({ id }) => id === edit);
   const url = '/admin/library/' + section;
+
   return (
-    <>
-      <header className="flex flex-wrap items-center justify-between gap-3">
+    <div className="space-y-5">
+      {/* Header */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-line pb-4">
         <div>
-          <h1 className="text-2xl font-semibold">
-            {fromDoctors ? 'Doctors' : labels[kind]}
-          </h1>
-          <p className="mt-2 text-sm text-muted">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-lg font-semibold text-ink tracking-tight">
+              {fromDoctors ? 'Doctors & Specialists' : labels[kind]}
+            </h1>
+            <span className="rounded-md border border-line bg-panel px-2 py-0.5 text-xs text-muted">
+              {items.length} {items.length === 1 ? 'record' : 'records'}
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-muted">
             {kind === 'team'
-              ? 'Add doctor profiles and choose which doctors appear in the homepage Our Doctors section.'
-              : 'Manage the items shown on the public website.'}
+              ? 'Manage doctor consultation profiles, specialties, and homepage placement.'
+              : kind === 'videos'
+                ? 'Manage clinic tours, patient care videos, and Life at New Life media.'
+                : 'Manage facility photos and patient moments displayed in the gallery.'}
           </p>
         </div>
-        <Link
-          className="text-sm font-medium text-action underline"
-          href={'/admin/pages/' + section}
-        >
-          Edit page introduction
-        </Link>
-      </header>
+
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {kind === 'team' && (
+            <Link
+              href={url + '?add=1'}
+              className="inline-flex items-center gap-1.5 rounded-md bg-action px-3.5 py-2 text-xs font-medium text-white shadow-2xs hover:bg-action/90 transition-colors"
+            >
+              <svg
+                className="size-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              <span>Add Doctor</span>
+            </Link>
+          )}
+          <Link
+            className="rounded-md border border-line bg-canvas px-3 py-1.5 text-xs font-medium text-muted hover:border-action hover:text-action shadow-2xs transition-colors"
+            href={'/admin/pages/' + section}
+          >
+            Edit Intro
+          </Link>
+        </div>
+      </div>
+
       {status && (
-        <p role="status" className="mt-4 text-sm text-action">
-          {status === 'homepage-saved'
-            ? 'Homepage visibility saved.'
-            : status === 'saved'
-              ? 'Changes published.'
-              : status === 'deleted'
-                ? 'Item removed from the public website.'
-                : 'Could not save. Check the fields and image file.'}
-        </p>
-      )}
-      {kind === 'team' && (
-        <Link
-          href={url + '?add=1'}
-          className="mt-4 inline-flex rounded-md bg-action px-4 py-2 text-sm font-semibold text-on-action"
+        <div
+          role="status"
+          className={`flex items-center gap-2 rounded-md border px-3 py-2 text-xs ${
+            status === 'error'
+              ? 'bg-red-50 border-red-200 text-red-800'
+              : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+          }`}
         >
-          Add doctor
-        </Link>
+          <span>{status === 'error' ? '⚠' : '✓'}</span>
+          <span>
+            {status === 'homepage-saved'
+              ? 'Homepage feature updated.'
+              : status === 'saved'
+                ? 'Changes published successfully.'
+                : status === 'deleted'
+                  ? 'Item removed from website.'
+                  : 'Could not complete action. Please check the fields and image.'}
+          </span>
+        </div>
       )}
+
+      {/* Add Doctor Form */}
       {kind === 'team' && add === '1' && (
         <form
           action={addDoctor.bind(null, fromDoctors)}
-          className="mt-6 grid max-w-2xl gap-4 rounded-md border border-line bg-canvas p-5"
+          className="rounded-lg border border-line bg-canvas p-5 shadow-2xs max-w-xl space-y-4"
         >
-          <h2 className="font-semibold">New doctor profile</h2>
-          <label className="grid gap-2 text-sm">
-            Full name
-            <Input name="title" required maxLength={160} />
+          <div className="border-b border-line pb-2.5">
+            <h2 className="font-semibold text-ink text-sm">
+              New Doctor Profile
+            </h2>
+            <p className="mt-0.5 text-xs text-muted">
+              Add a consultant or medical specialist to the team directory.
+            </p>
+          </div>
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
+            Full Name & Title
+            <Input
+              name="title"
+              required
+              maxLength={160}
+              placeholder="e.g. Dr. Jane Doe, MBBS, MD"
+            />
           </label>
-          <label className="grid gap-2 text-sm">
-            Specialty
-            <Input name="detail" required maxLength={240} />
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
+            Specialty or Department
+            <Input
+              name="detail"
+              required
+              maxLength={240}
+              placeholder="e.g. Consultant Gynecologist"
+            />
           </label>
-          <label className="grid gap-2 text-sm">
-            Treatment for appointment selection
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
+            Associated Department / Treatment
             <select
               name="careId"
               required
               defaultValue=""
-              className="rounded-sm border border-line p-3"
+              className="rounded-md border border-line p-2 text-xs bg-canvas text-ink"
             >
               <option value="" disabled>
-                Select a treatment
+                Select department
               </option>
               {treatments.map(({ id, title }) => (
                 <option key={id} value={id}>
@@ -114,17 +176,20 @@ export default async function LibraryPage({
               ))}
             </select>
           </label>
-          <label className="grid gap-2 text-sm">
-            Areas of interest (optional, one per line)
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
+            Areas of Interest (one per line)
             <textarea
               name="interests"
               maxLength={500}
               rows={3}
-              className="rounded-sm border border-line p-3"
+              placeholder="e.g. Infertility Management&#10;High-risk Pregnancy"
+              className="rounded-md border border-line p-2 text-xs bg-canvas text-ink"
             />
           </label>
-          <label className="grid gap-2 text-sm">
-            Doctor photo (JPEG, PNG or WebP, up to 4 MB)
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
+            Doctor Photo (JPEG, PNG or WebP, up to 4 MB)
             <Input
               name="image"
               type="file"
@@ -132,25 +197,35 @@ export default async function LibraryPage({
               accept="image/jpeg,image/png,image/webp"
             />
           </label>
-          <div className="flex items-center gap-4">
-            <label className="inline-flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                name="homepage"
-                defaultChecked
-                className="size-4 accent-action"
-              />
-              Show on homepage
+
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              type="checkbox"
+              id="show-on-homepage"
+              name="homepage"
+              defaultChecked
+              className="size-4 accent-action"
+            />
+            <label htmlFor="show-on-homepage" className="text-xs text-ink">
+              Show doctor on public homepage
             </label>
           </div>
-          <div className="flex items-center gap-4">
-            <Button type="submit">Publish doctor</Button>
-            <Link href={url} className="text-sm text-action underline">
+
+          <div className="flex items-center gap-2.5 pt-3 border-t border-line">
+            <Button type="submit" size="sm">
+              Save Doctor
+            </Button>
+            <Link
+              href={url}
+              className="rounded-md border border-line px-3 py-1.5 text-xs text-muted hover:text-ink"
+            >
               Cancel
             </Link>
           </div>
         </form>
       )}
+
+      {/* Edit Selected Item Form */}
       {selected && (
         <form
           action={updateLibraryItem.bind(
@@ -160,11 +235,19 @@ export default async function LibraryPage({
             false,
             fromDoctors,
           )}
-          className="mt-6 grid max-w-2xl gap-4 rounded-md border border-line bg-canvas p-5"
+          className="rounded-lg border border-line bg-canvas p-5 shadow-2xs max-w-xl space-y-4"
         >
-          <h2 className="font-semibold">Edit {selected.title}</h2>
-          <label className="grid gap-2 text-sm">
-            Name or title
+          <div className="border-b border-line pb-2.5">
+            <h2 className="font-semibold text-ink text-sm">
+              Edit {selected.title}
+            </h2>
+            <p className="mt-0.5 text-xs text-muted">
+              Update information or replace cover media.
+            </p>
+          </div>
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
+            {kind === 'team' ? 'Doctor Name' : 'Item Title'}
             <Input
               name="title"
               required
@@ -172,123 +255,204 @@ export default async function LibraryPage({
               defaultValue={selected.title}
             />
           </label>
-          <label className="grid gap-2 text-sm">
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
             {kind === 'gallery'
-              ? 'Image description'
+              ? 'Caption'
               : kind === 'team'
                 ? 'Specialty'
-                : 'Category'}
+                : 'Category / Tag'}
             <Input
               name="detail"
               maxLength={240}
               defaultValue={selected.detail}
             />
           </label>
-          <label className="grid gap-2 text-sm">
-            Replace {kind === 'videos' ? 'thumbnail' : 'photo'} (optional)
+
+          <label className="grid gap-1 text-xs font-medium text-ink">
+            Replace {kind === 'videos' ? 'Thumbnail' : 'Photo'} (optional)
             <Input
               name="image"
               type="file"
               accept="image/jpeg,image/png,image/webp"
             />
           </label>
-          <div className="flex items-center gap-4">
-            <Button type="submit">Publish changes</Button>
-            <Link href={url} className="text-sm text-action underline">
+
+          <div className="flex items-center gap-2.5 pt-3 border-t border-line">
+            <Button type="submit" size="sm">
+              Save Changes
+            </Button>
+            <Link
+              href={url}
+              className="rounded-md border border-line px-3 py-1.5 text-xs text-muted hover:text-ink"
+            >
               Cancel
             </Link>
           </div>
         </form>
       )}
-      <section className="mt-6 rounded-md border border-line bg-canvas">
-        <h2 className="border-b border-line px-5 py-4 font-semibold">
-          Published items ({items.length})
-        </h2>
-        {items.length === 0 && (
-          <p className="p-5 text-sm text-muted">No published items.</p>
-        )}
-        <ul className="divide-y divide-line">
-          {items.map((item) => (
-            <li
-              key={item.id}
-              className="flex flex-wrap items-center gap-4 p-4 sm:px-5"
-            >
-              <Image
-                src={item.image}
-                alt=""
-                width={96}
-                height={64}
-                className="h-16 w-24 rounded-sm object-cover"
-              />
-              <div className="min-w-40 flex-1">
-                <p className="font-medium">{item.title}</p>
-                <p className="mt-1 text-sm text-muted">{item.detail}</p>
-              </div>
-              {(kind === 'videos' || kind === 'team') && (
-                <HomepageCheckbox
-                  kind={kind === 'team' ? 'doctor' : 'video'}
-                  id={item.id}
-                  title={item.title}
-                  visible={visibility?.get(item.id) ?? true}
-                />
-              )}
-              <div className="flex items-center gap-4 text-sm">
-                <Link
-                  href={fromDoctors ? '/doctors' : item.href}
-                  target="_blank"
-                  className="text-action underline"
-                  aria-label={'View ' + item.title}
-                >
-                  View
-                </Link>
-                <Link
-                  href={url + '?edit=' + item.id}
-                  className="text-action underline"
-                  aria-label={'Edit ' + item.title}
-                >
-                  Edit
-                </Link>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-negative"
-                      aria-label={'Delete ' + item.title}
+
+      {/* Directory Table */}
+      <div className="overflow-hidden rounded-lg border border-line bg-canvas shadow-2xs">
+        {items.length === 0 ? (
+          <div className="p-8 text-center text-xs text-muted">
+            No published items found in this section.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-line bg-panel/75 text-[11px] font-medium text-muted">
+                  <th scope="col" className="px-4 py-3">
+                    {kind === 'videos'
+                      ? 'Video'
+                      : kind === 'team'
+                        ? 'Doctor Profile'
+                        : 'Image'}
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    {kind === 'team' ? 'Specialty' : 'Category / Tag'}
+                  </th>
+                  {(kind === 'videos' || kind === 'team') && (
+                    <th scope="col" className="px-4 py-3">
+                      Show on Homepage
+                    </th>
+                  )}
+                  <th scope="col" className="px-3 py-3">
+                    Status
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-right">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {items.map((item) => {
+                  const isFeatured = visibility?.get(item.id) ?? true;
+                  return (
+                    <tr
+                      key={item.id}
+                      className="transition-colors hover:bg-panel/30"
                     >
-                      Delete
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent
-                    title="Remove this item?"
-                    description={item.title}
-                  >
-                    <form
-                      action={updateLibraryItem.bind(
-                        null,
-                        kind,
-                        item.id,
-                        true,
-                        fromDoctors,
+                      {/* Media & Title */}
+                      <td className="px-4 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <div className="relative h-11 w-16 shrink-0 overflow-hidden rounded-md border border-line bg-panel">
+                            <Image
+                              src={item.image}
+                              alt=""
+                              fill
+                              sizes="64px"
+                              className="object-cover"
+                            />
+                            {kind === 'videos' && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/25">
+                                <span className="flex size-4 items-center justify-center rounded-full bg-white/90 text-action text-[9px] shadow-2xs">
+                                  ▶
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="min-w-0 max-w-[220px]">
+                            <span className="block font-medium text-ink truncate">
+                              {item.title}
+                            </span>
+                            <span className="block text-[11px] font-mono text-muted truncate">
+                              {item.id}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Category or Specialty */}
+                      <td className="px-4 py-3.5 whitespace-nowrap">
+                        <span className="rounded bg-soft px-2 py-0.5 text-xs text-action font-medium">
+                          {item.detail || 'General'}
+                        </span>
+                      </td>
+
+                      {/* Homepage toggle */}
+                      {(kind === 'videos' || kind === 'team') && (
+                        <td className="px-4 py-3.5 whitespace-nowrap">
+                          <HomepageCheckbox
+                            kind={kind === 'team' ? 'doctor' : 'video'}
+                            id={item.id}
+                            title={item.title}
+                            visible={isFeatured}
+                          />
+                        </td>
                       )}
-                      className="flex justify-end gap-3"
-                    >
-                      <DialogClose asChild>
-                        <Button type="button" variant="outline">
-                          Cancel
-                        </Button>
-                      </DialogClose>
-                      <Button type="submit" variant="danger">
-                        Delete
-                      </Button>
-                    </form>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </>
+
+                      {/* Status */}
+                      <td className="px-3 py-3.5 whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1.5 text-xs text-emerald-700">
+                          <span className="size-1.5 rounded-full bg-emerald-500"></span>
+                          Active
+                        </span>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-4 py-3.5 text-right whitespace-nowrap">
+                        <div className="inline-flex items-center gap-2">
+                          <Link
+                            href={fromDoctors ? '/doctors' : item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded border border-line bg-canvas px-2.5 py-1 text-xs text-muted hover:border-action hover:text-action transition-colors"
+                          >
+                            View ↗
+                          </Link>
+                          <Link
+                            href={url + '?edit=' + item.id}
+                            className="rounded bg-soft px-2.5 py-1 text-xs font-medium text-action hover:bg-action hover:text-white transition-colors"
+                          >
+                            Edit
+                          </Link>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-negative hover:bg-red-50 text-xs px-2 h-7"
+                              >
+                                Remove
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent
+                              title="Remove this item?"
+                              description={`Remove “${item.title}” from the public website.`}
+                            >
+                              <form
+                                action={updateLibraryItem.bind(
+                                  null,
+                                  kind,
+                                  item.id,
+                                  true,
+                                  fromDoctors,
+                                )}
+                                className="flex justify-end gap-3"
+                              >
+                                <DialogClose asChild>
+                                  <Button type="button" variant="outline">
+                                    Cancel
+                                  </Button>
+                                </DialogClose>
+                                <Button type="submit" variant="danger">
+                                  Remove item
+                                </Button>
+                              </form>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

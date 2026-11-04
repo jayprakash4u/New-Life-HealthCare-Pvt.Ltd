@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PasswordInput } from '@/components/admin/password-input';
 import { adminConfigured, adminSignedIn } from '@/lib/admin-auth';
 import { loginAdmin } from '../actions';
 
@@ -67,10 +68,9 @@ export default async function AdminLogin({
               >
                 Password
               </label>
-              <Input
+              <PasswordInput
                 id="admin-password"
                 name="password"
-                type="password"
                 autoComplete="current-password"
                 required
                 maxLength={256}

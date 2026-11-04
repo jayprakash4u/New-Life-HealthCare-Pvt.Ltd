@@ -53,180 +53,235 @@ export default async function PageEditor({
       : undefined);
   const details = copy.serviceDetails ?? service;
   const { status } = await searchParams;
+
+  const backHref =
+    isBlog || page.id === 'blogs'
+      ? '/admin/blogs'
+      : ['home', 'home-introduction'].includes(page.id)
+        ? '/admin/home'
+        : page.id === 'gallery'
+          ? '/admin/library/gallery'
+          : ['team', 'doctors'].includes(page.id)
+            ? '/admin/library/doctors'
+            : page.group === 'Services'
+              ? '/admin/services'
+              : page.group === 'Treatments'
+                ? '/admin/treatments'
+                : '/admin';
+
+  const backLabel =
+    isBlog || page.id === 'blogs'
+      ? 'Blogs'
+      : ['home', 'home-introduction'].includes(page.id)
+        ? 'Homepage Content'
+        : page.id === 'gallery'
+          ? 'Photo Gallery'
+          : ['team', 'doctors'].includes(page.id)
+            ? 'Doctors & Specialists'
+            : page.group === 'Services'
+              ? 'Clinic Services'
+              : page.group === 'Treatments'
+                ? 'Medical Treatments'
+                : 'Dashboard';
+
   return (
-    <div className="mx-auto max-w-5xl">
-      <Link
-        href={
-          isBlog || page.id === 'blogs'
-            ? '/admin/blogs'
-            : ['home', 'home-introduction'].includes(page.id)
-              ? '/admin/home'
-              : page.id === 'gallery'
-                ? '/admin/gallery'
-                : '/admin'
-        }
-        className="text-sm text-action underline underline-offset-4"
-      >
-        ←{' '}
-        {isBlog || page.id === 'blogs'
-          ? 'Blogs'
-          : ['home', 'home-introduction'].includes(page.id)
-            ? 'Homepage Content'
-            : page.id === 'gallery'
-              ? 'Gallery'
-              : 'Dashboard'}
-      </Link>
-      <h1 className="mt-5 text-2xl font-semibold tracking-tight">
-        {page.label}
-      </h1>
-      <Link
-        href={page.path}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-3 inline-block text-sm text-action underline underline-offset-4"
-      >
-        View published page
-      </Link>
-      {status === 'draft' && (
-        <p role="status" className="mt-5 text-sm text-action">
-          Draft saved. Your public page is unchanged.
-        </p>
-      )}
-      {status === 'saved' && (
-        <p
-          role="status"
-          className="mt-5 rounded-md bg-soft p-3 text-sm text-action"
+    <div className="space-y-5 max-w-4xl">
+      {/* Navigation & Header */}
+      <div className="border-b border-line pb-4">
+        <Link
+          href={backHref}
+          className="inline-flex items-center gap-1 text-xs text-muted hover:text-action transition-colors"
         >
-          Changes published.
-        </p>
+          <span>←</span>
+          <span>Back to {backLabel}</span>
+        </Link>
+        <div className="mt-2.5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-lg font-semibold text-ink tracking-tight">
+                {page.label}
+              </h1>
+              <span className="rounded border border-line bg-panel px-2 py-0.5 text-xs text-muted">
+                {page.group}
+              </span>
+            </div>
+            <p className="mt-1 text-xs text-muted">
+              Edit the live copy, banner image, and public details for this
+              page.
+            </p>
+          </div>
+          <Link
+            href={page.path}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-md border border-line bg-canvas px-3 py-1.5 text-xs font-medium text-muted hover:border-action hover:text-action shadow-2xs transition-colors self-start sm:self-auto"
+          >
+            <span>View Published Page</span>
+            <svg
+              className="size-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+              />
+            </svg>
+          </Link>
+        </div>
+      </div>
+
+      {status === 'draft' && (
+        <div
+          role="status"
+          className="flex items-center gap-2 rounded-lg bg-blue-50 border border-blue-200 p-3 text-xs font-semibold text-blue-800"
+        >
+          <span>ℹ</span>
+          <span>Draft saved. Your public page remains unchanged.</span>
+        </div>
       )}
+
+      {status === 'saved' && (
+        <div
+          role="status"
+          className="flex items-center gap-2 rounded-lg bg-emerald-50 border border-emerald-200 p-3 text-xs font-semibold text-emerald-800"
+        >
+          <span>✓</span>
+          <span>Changes published successfully to the website.</span>
+        </div>
+      )}
+
       {status === 'invalid' && (
-        <p role="alert" className="mt-5 text-sm text-negative">
-          Enter a heading and check the character limits.
-        </p>
+        <div
+          role="alert"
+          className="flex items-center gap-2 rounded-lg bg-red-50 border border-red-200 p-3 text-xs font-semibold text-red-800"
+        >
+          <span>⚠</span>
+          <span>
+            Enter a heading and ensure character limits are respected.
+          </span>
+        </div>
       )}
+
       {status === 'error' && (
-        <p role="alert" className="mt-5 text-sm text-negative">
-          Changes could not be saved. Please try again.
-        </p>
+        <div
+          role="alert"
+          className="flex items-center gap-2 rounded-lg bg-red-50 border border-red-200 p-3 text-xs font-semibold text-red-800"
+        >
+          <span>⚠</span>
+          <span>Changes could not be saved. Please try again.</span>
+        </div>
       )}
+
       <form
         action={publishPage.bind(null, page.id)}
-        className="mt-6 space-y-5 rounded-md border border-line bg-canvas p-5 shadow-xs sm:p-7"
+        className="space-y-6 rounded-xl border border-line bg-canvas p-6 shadow-2xs sm:p-8"
       >
-        <section aria-labelledby="editor-page-details">
-          <h2 id="editor-page-details" className="mb-5 font-semibold">
-            Page details
-          </h2>
-          <div
-            className={
-              hasEditableImage(page)
-                ? 'grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_16rem]'
-                : 'grid gap-5'
-            }
-          >
-            <div className="space-y-5">
-              <div>
-                <label
-                  htmlFor="page-title"
-                  className="mb-2 block text-sm font-semibold"
-                >
-                  Page heading
-                </label>
-                <Input
-                  id="page-title"
-                  name="title"
-                  defaultValue={copy.title.replaceAll('\n', ' ')}
-                  required
-                  maxLength={160}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="page-body"
-                  className="mb-2 block text-sm font-semibold"
-                >
-                  {page.group === 'Articles'
-                    ? 'Article text'
-                    : 'Page introduction or overview'}
-                </label>
-                <textarea
-                  id="page-body"
-                  name="body"
-                  defaultValue={copy.body}
-                  rows={10}
-                  maxLength={12000}
-                  className="w-full rounded-md border border-line bg-canvas p-3 text-sm leading-6"
-                  aria-describedby="paragraph-hint"
-                />
-                <p id="paragraph-hint" className="mt-2 text-xs text-muted">
-                  Leave a blank line between paragraphs.
-                </p>
-              </div>
-            </div>
-            {hasEditableImage(page) && (
-              <div className="space-y-4">
-                {image && (
-                  <div className="space-y-2">
-                    <p className="text-sm font-semibold">
-                      {draft?.image ? 'Draft image' : 'Current image'}
-                    </p>
-                    <Image
-                      src={image}
-                      alt=""
-                      width={320}
-                      height={180}
-                      className="aspect-video rounded-sm border border-line object-contain"
-                    />
-                  </div>
-                )}
-                {(page.group === 'Services' || page.group === 'Treatments') && (
-                  <label className="grid gap-2 text-sm font-semibold">
-                    Image description for screen readers
-                    <Input
-                      name="imageAlt"
-                      maxLength={200}
-                      defaultValue={
-                        copy.imageAlt ??
-                        service?.imageAlt ??
-                        treatment?.imageAlt
-                      }
-                    />
-                  </label>
-                )}
+        <section aria-labelledby="editor-page-details" className="space-y-5">
+          <div className="border-b border-line pb-3">
+            <h2
+              id="editor-page-details"
+              className="font-bold text-ink text-base"
+            >
+              Page Content
+            </h2>
+            <p className="mt-0.5 text-xs text-muted">
+              Main headline, body description, and media.
+            </p>
+          </div>
+
+          <label className="grid gap-1.5 text-xs font-semibold text-ink">
+            Page Heading / Title
+            <Input
+              name="title"
+              required
+              maxLength={160}
+              defaultValue={copy.title}
+              className="text-sm"
+            />
+          </label>
+
+          <label className="grid gap-1.5 text-xs font-semibold text-ink">
+            Page Overview / Description
+            <textarea
+              name="body"
+              required
+              rows={8}
+              maxLength={12000}
+              defaultValue={copy.body}
+              className="rounded-md border border-line p-3 text-xs leading-relaxed bg-canvas"
+            />
+          </label>
+
+          {/* Image Section */}
+          <div className="rounded-xl border border-line/80 bg-panel/50 p-4 space-y-4">
+            <h3 className="font-semibold text-ink text-xs uppercase tracking-wide">
+              Page Imagery
+            </h3>
+            {image && (
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                <div className="relative h-28 w-44 shrink-0 overflow-hidden rounded-lg border border-line bg-panel">
+                  <Image
+                    src={image}
+                    alt=""
+                    fill
+                    sizes="176px"
+                    className="object-cover"
+                  />
+                </div>
                 {hasEditableImage(page) && (
-                  <label className="grid gap-2 text-sm font-semibold">
-                    Replace main image
-                    <Input
-                      type="file"
-                      name="image"
-                      accept="image/jpeg,image/png,image/webp"
-                    />
-                    <span className="text-xs font-normal text-muted">
-                      JPEG, PNG or WebP, up to 4 MB. Leave blank to keep the
-                      current image.
-                    </span>
-                  </label>
+                  <div className="flex-1 space-y-3">
+                    <label className="grid gap-1 text-xs font-semibold text-ink">
+                      Replace Image
+                      <Input
+                        type="file"
+                        name="image"
+                        accept="image/jpeg,image/png,image/webp"
+                      />
+                      <span className="text-[11px] font-normal text-muted">
+                        JPEG, PNG or WebP, up to 4 MB. Leave blank to keep
+                        current image.
+                      </span>
+                    </label>
+
+                    <label className="grid gap-1 text-xs font-semibold text-ink">
+                      Image Alt Text (accessibility description)
+                      <Input
+                        name="imageAlt"
+                        maxLength={200}
+                        defaultValue={copy.imageAlt}
+                        placeholder="Briefly describe the image for screen readers"
+                      />
+                    </label>
+                  </div>
                 )}
               </div>
             )}
           </div>
         </section>
+
         {details && (
-          <fieldset className="grid gap-4 rounded-md border border-line p-4">
-            <legend className="px-2 font-semibold">Page content</legend>
-            <label className="grid gap-2 text-sm font-medium">
-              Highlights (one per line)
+          <fieldset className="space-y-4 rounded-xl border border-line bg-panel/30 p-5">
+            <legend className="px-2 font-bold text-ink text-xs uppercase tracking-wider">
+              Care & Service Details
+            </legend>
+
+            <label className="grid gap-1.5 text-xs font-semibold text-ink">
+              Highlights / Key Care Points (one per line)
               <textarea
                 name="highlights"
                 rows={3}
                 maxLength={500}
                 defaultValue={details.highlights.join('\n')}
-                className="rounded-sm border border-line p-3"
+                className="rounded-md border border-line p-3 text-xs bg-canvas"
               />
             </label>
-            <label className="grid gap-2 text-sm font-medium">
-              Enquiry button label
+
+            <label className="grid gap-1.5 text-xs font-semibold text-ink">
+              Action Button Label
               <Input
                 name="actionLabel"
                 required
@@ -234,8 +289,9 @@ export default async function PageEditor({
                 defaultValue={details.action}
               />
             </label>
-            <label className="grid gap-2 text-sm font-medium">
-              Frequently asked question
+
+            <label className="grid gap-1.5 text-xs font-semibold text-ink">
+              Frequently Asked Question
               <Input
                 name="faqQuestion"
                 required
@@ -243,44 +299,44 @@ export default async function PageEditor({
                 defaultValue={details.question}
               />
             </label>
-            <label className="grid gap-2 text-sm font-medium">
-              Answer
+
+            <label className="grid gap-1.5 text-xs font-semibold text-ink">
+              Question Answer
               <textarea
                 name="faqAnswer"
                 required
                 rows={3}
                 maxLength={2000}
                 defaultValue={details.answer}
-                className="rounded-sm border border-line p-3"
+                className="rounded-md border border-line p-3 text-xs bg-canvas"
               />
             </label>
           </fieldset>
         )}
-        <div className="flex flex-wrap gap-3">
+
+        <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-line">
+          <Button type="submit">Publish Changes</Button>
           <Button type="submit" name="intent" value="draft" variant="outline">
-            Save draft
+            Save Draft (Unpublished)
           </Button>
-          <Button type="submit">Publish changes</Button>
+          <Link
+            href={backHref}
+            className="rounded-md border border-line px-3 py-2 text-xs font-medium text-muted hover:text-ink ml-auto"
+          >
+            Cancel
+          </Link>
         </div>
+
         {draft && (
-          <details className="rounded-md border border-line bg-panel p-4">
-            <summary className="cursor-pointer text-sm font-semibold">
-              Preview saved draft
-            </summary>
-            <h2 className="mt-3 text-xl font-semibold">{draft.title}</h2>
-            <p className="mt-2 whitespace-pre-wrap text-sm text-muted">
+          <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4">
+            <p className="font-bold text-blue-900 text-xs uppercase tracking-wide">
+              Saved Unpublished Draft
+            </p>
+            <h4 className="mt-2 text-base font-bold text-ink">{draft.title}</h4>
+            <p className="mt-1 whitespace-pre-wrap text-xs text-muted leading-relaxed">
               {draft.body}
             </p>
-            {draft.image && (
-              <Image
-                src={draft.image}
-                alt=""
-                width={480}
-                height={280}
-                className="mt-4 h-auto max-w-full"
-              />
-            )}
-          </details>
+          </div>
         )}
       </form>
     </div>

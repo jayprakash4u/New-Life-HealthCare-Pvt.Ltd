@@ -27,143 +27,230 @@ export default async function AdminBlogs({
     'blog',
     articles.map(({ id }) => id),
   );
+
   return (
-    <>
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <div className="space-y-5">
+      {/* Page Header */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-line pb-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Blogs</h1>
-          <p className="mt-2 text-sm text-muted">
-            Manage the articles published on your website.
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-lg font-semibold text-ink tracking-tight">
+              Health Articles & Blog Publications
+            </h1>
+            <span className="rounded-md border border-line bg-panel px-2 py-0.5 text-xs text-muted">
+              {articles.length} {articles.length === 1 ? 'article' : 'articles'}
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-muted">
+            Manage educational health articles, clinic updates, and publications
+            featured on the website.
           </p>
         </div>
-        <Link
-          href="/admin/pages/blogs"
-          className="text-sm font-medium text-action underline underline-offset-4"
-        >
-          Edit page introduction
-        </Link>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <Link
+            href="/admin/pages/blogs"
+            className="rounded-md border border-line bg-canvas px-3 py-1.5 text-xs font-medium text-muted hover:border-action hover:text-action shadow-2xs transition-colors"
+          >
+            Edit Blog Intro
+          </Link>
+          <Link
+            href="/blogs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 rounded-md bg-action px-3 py-1.5 text-xs font-medium text-white shadow-2xs hover:bg-action/90 transition-colors"
+          >
+            <span>View Public Blog</span>
+            <svg
+              className="size-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+              />
+            </svg>
+          </Link>
+        </div>
       </div>
+
+      {/* Notifications */}
       {status === 'homepage-saved' && (
-        <p role="status" className="mt-4 text-sm text-action">
-          Homepage visibility saved.
-        </p>
-      )}
-      {status === 'homepage-error' && (
-        <p role="alert" className="mt-4 text-sm text-negative">
-          Could not update the homepage. Try again.
-        </p>
-      )}
-      {status === 'deleted' && (
-        <p role="status" className="mt-5 text-sm text-action">
-          Article removed from the website.
-        </p>
-      )}
-      {status === 'error' && (
-        <p role="alert" className="mt-5 text-sm text-negative">
-          The article could not be deleted. Please try again.
-        </p>
-      )}
-      <div className="my-6 max-w-sm rounded-md border border-line bg-canvas p-5 shadow-xs">
-        <p className="text-xs font-semibold tracking-wide text-muted uppercase">
-          Total posts
-        </p>
-        <p className="mt-4 text-3xl font-semibold">{articles.length}</p>
-      </div>
-      <div>
-        <section
-          aria-labelledby="existing-posts"
-          className="rounded-md border border-line bg-canvas p-5 shadow-xs"
+        <div
+          role="status"
+          className="flex items-center gap-2 rounded-md bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs text-emerald-800"
         >
-          <h2 id="existing-posts" className="mb-4 font-semibold">
-            Published posts
-          </h2>
-          {articles.length === 0 ? (
-            <p className="text-sm text-muted">
-              There are no published articles.
-            </p>
-          ) : (
-            <ul className="space-y-3">
-              {articles.map((article) => (
-                <li
-                  key={article.id}
-                  className="flex flex-wrap items-center gap-3 rounded-md border border-line p-3 text-sm"
-                >
-                  <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm bg-panel">
-                    <Image
-                      src={article.image}
-                      alt=""
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="min-w-32 flex-1">
-                    <p className="font-semibold">{article.title}</p>
-                    <span className="mt-1 inline-block rounded-sm bg-soft px-2 py-0.5 text-xs font-medium text-action">
-                      {article.category}
-                    </span>
-                  </div>
-                  <HomepageCheckbox
-                    kind="blog"
-                    id={article.id}
-                    title={article.title}
-                    visible={visibility.get(article.id) ?? true}
-                  />
-                  <div className="ml-auto flex items-center gap-3">
-                    <Link
-                      href={article.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`View ${article.title} (opens in a new tab)`}
-                      className="font-medium text-action underline underline-offset-4"
+          <span>✓</span>
+          <span>Homepage article visibility updated.</span>
+        </div>
+      )}
+
+      {status === 'deleted' && (
+        <div
+          role="status"
+          className="flex items-center gap-2 rounded-md bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs text-emerald-800"
+        >
+          <span>✓</span>
+          <span>Article removed from website.</span>
+        </div>
+      )}
+
+      {status === 'error' && (
+        <div
+          role="alert"
+          className="flex items-center gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-800"
+        >
+          <span>⚠</span>
+          <span>Could not complete action. Please try again.</span>
+        </div>
+      )}
+
+      {/* Articles Table */}
+      <div className="overflow-hidden rounded-lg border border-line bg-canvas shadow-2xs">
+        {articles.length === 0 ? (
+          <div className="p-8 text-center text-xs text-muted">
+            No published articles found.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-line bg-panel/75 text-[11px] font-medium text-muted">
+                  <th scope="col" className="px-4 py-3">
+                    Article
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Category
+                  </th>
+                  <th scope="col" className="px-4 py-3">
+                    Show on Homepage
+                  </th>
+                  <th scope="col" className="px-3 py-3">
+                    Status
+                  </th>
+                  <th scope="col" className="px-4 py-3 text-right">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {articles.map((article) => {
+                  const isFeatured = visibility.get(article.id) ?? true;
+                  return (
+                    <tr
+                      key={article.id}
+                      className="transition-colors hover:bg-panel/30"
                     >
-                      View
-                    </Link>
-                    <Link
-                      href={`/admin/pages/blog-${article.id}`}
-                      aria-label={`Edit ${article.title}`}
-                      className="font-medium text-action underline underline-offset-4"
-                    >
-                      Edit
-                    </Link>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          aria-label={`Delete ${article.title}`}
-                          className="text-negative"
-                        >
-                          Delete
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent
-                        title="Delete article?"
-                        description={`Remove “${article.title}” from the public website.`}
-                      >
-                        <form
-                          action={deleteArticle.bind(
-                            null,
-                            `blog-${article.id}`,
-                          )}
-                          className="flex justify-end gap-3"
-                        >
-                          <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                          </DialogClose>
-                          <Button type="submit" variant="danger">
-                            Delete article
-                          </Button>
-                        </form>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+                      {/* Media & Title */}
+                      <td className="px-4 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <div className="relative h-11 w-16 shrink-0 overflow-hidden rounded-md border border-line bg-panel">
+                            <Image
+                              src={article.image}
+                              alt=""
+                              fill
+                              sizes="64px"
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="min-w-0 max-w-[280px]">
+                            <span className="block font-medium text-ink truncate">
+                              {article.title}
+                            </span>
+                            <span className="block text-[11px] font-mono text-muted truncate">
+                              /blogs/{article.id}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Category */}
+                      <td className="px-4 py-3.5 whitespace-nowrap">
+                        <span className="rounded bg-soft px-2 py-0.5 text-xs text-action font-medium">
+                          {article.category}
+                        </span>
+                      </td>
+
+                      {/* Homepage toggle */}
+                      <td className="px-4 py-3.5 whitespace-nowrap">
+                        <HomepageCheckbox
+                          kind="blog"
+                          id={article.id}
+                          title={article.title}
+                          visible={isFeatured}
+                        />
+                      </td>
+
+                      {/* Status */}
+                      <td className="px-3 py-3.5 whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1.5 text-xs text-emerald-700">
+                          <span className="size-1.5 rounded-full bg-emerald-500"></span>
+                          Published
+                        </span>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-4 py-3.5 text-right whitespace-nowrap">
+                        <div className="inline-flex items-center gap-2">
+                          <Link
+                            href={article.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded border border-line bg-canvas px-2.5 py-1 text-xs text-muted hover:border-action hover:text-action transition-colors"
+                          >
+                            View ↗
+                          </Link>
+                          <Link
+                            href={`/admin/pages/blog-${article.id}`}
+                            className="rounded bg-soft px-2.5 py-1 text-xs font-medium text-action hover:bg-action hover:text-white transition-colors"
+                          >
+                            Edit
+                          </Link>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-negative hover:bg-red-50 text-xs px-2 h-7"
+                              >
+                                Delete
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent
+                              title="Delete article?"
+                              description={`Remove “${article.title}” from the public website.`}
+                            >
+                              <form
+                                action={deleteArticle.bind(
+                                  null,
+                                  `blog-${article.id}`,
+                                )}
+                                className="flex justify-end gap-3"
+                              >
+                                <DialogClose asChild>
+                                  <Button variant="outline" type="button">
+                                    Cancel
+                                  </Button>
+                                </DialogClose>
+                                <Button type="submit" variant="danger">
+                                  Delete article
+                                </Button>
+                              </form>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }

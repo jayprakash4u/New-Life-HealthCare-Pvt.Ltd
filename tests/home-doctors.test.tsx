@@ -16,14 +16,13 @@ beforeEach(() => {
   vi.mocked(getHomepageVisibility).mockResolvedValue(new Map());
 });
 
-it('includes selected doctors beyond the first four and excludes hidden doctors', async () => {
+it('shows at most four homepage doctors and excludes hidden doctors', async () => {
   vi.mocked(getHomepageVisibility).mockResolvedValue(
     new Map([[doctors[0].id, false]]),
   );
   render(await OurDoctors({ homepage: true }));
   expect(screen.queryByRole('heading', { name: doctors[0].name })).toBeNull();
-  expect(screen.getByRole('heading', { name: doctors[5].name })).toBeTruthy();
-  expect(screen.getAllByRole('article')).toHaveLength(doctors.length - 1);
+  expect(screen.getAllByRole('article')).toHaveLength(4);
 });
 
 it('omits the homepage section when all doctors are hidden', async () => {

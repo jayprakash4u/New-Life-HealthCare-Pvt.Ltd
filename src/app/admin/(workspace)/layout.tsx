@@ -1,6 +1,7 @@
 import { requireAdmin } from '@/lib/admin-auth';
 import { WorkspaceNavigation } from '@/components/admin/workspace-navigation';
 import { getAdminPages } from '@/lib/added-care';
+import { listEnquiries } from '@/lib/enquiries';
 import { logoutAdmin } from '../actions';
 
 export default async function WorkspaceLayout({
@@ -9,10 +10,18 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }) {
   await requireAdmin();
+  const [pages, enquiries] = await Promise.all([
+    getAdminPages(),
+    listEnquiries().catch(() => []),
+  ]);
+
+  const pendingEnquiries = enquiries.filter((e) => !e.resolved).length;
+
   return (
     <WorkspaceNavigation
       signOut={logoutAdmin}
-      entries={(await getAdminPages())
+      pendingEnquiries={pendingEnquiries}
+      entries={pages
         .filter(
           ({ group, id }) =>
             group !== 'Articles' &&
