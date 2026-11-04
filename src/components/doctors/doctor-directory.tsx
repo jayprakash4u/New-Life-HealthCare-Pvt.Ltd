@@ -1,31 +1,49 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId, useState, useMemo } from 'react';
 import type { Doctor } from '@/config/doctors';
 import { Container } from '@/components/ui/container';
 import { Input, Select } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { DoctorCard } from './doctor-card';
+import { DataTablePagination } from '@/components/ui/data-table-pagination';
 
 export function DoctorDirectory({ doctors }: { doctors: readonly Doctor[] }) {
   const [query, setQuery] = useState('');
   const [specialty, setSpecialty] = useState('all');
+  const [page, setPage] = useState(1);
+  const pageSize = 6;
+
   const searchId = useId();
   const specialtyId = useId();
   const specialties = [...new Set(doctors.map((doctor) => doctor.specialty))];
   const normalizedQuery = query.trim().toLocaleLowerCase();
-  const results = doctors.filter(
-    (doctor) =>
-      (specialty === 'all' || doctor.specialty === specialty) &&
-      [doctor.name, doctor.specialty, ...doctor.interests].some((value) =>
-        value.toLocaleLowerCase().includes(normalizedQuery),
-      ),
-  );
+
+  const results = useMemo(() => {
+    return doctors.filter(
+      (doctor) =>
+        (specialty === 'all' || doctor.specialty === specialty) &&
+        [doctor.name, doctor.specialty, ...doctor.interests].some((value) =>
+          value.toLocaleLowerCase().includes(normalizedQuery),
+        ),
+    );
+  }, [doctors, specialty, normalizedQuery]);
+
+  const totalPages = Math.max(1, Math.ceil(results.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+
+  const paginatedResults = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return results.slice(start, start + pageSize);
+  }, [results, currentPage, pageSize]);
+
   function reset() {
     setQuery('');
     setSpecialty('all');
+    setPage(1);
   }
+
   return (
     <section
       aria-label="Doctor directory"
@@ -46,7 +64,10 @@ export function DoctorDirectory({ doctors }: { doctors: readonly Doctor[] }) {
                 type="search"
                 placeholder="Search by name or care area"
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setPage(1);
+                }}
                 className="pr-11 text-sm"
               />
               <svg
@@ -74,7 +95,10 @@ export function DoctorDirectory({ doctors }: { doctors: readonly Doctor[] }) {
             <Select
               id={specialtyId}
               value={specialty}
-              onChange={(event) => setSpecialty(event.target.value)}
+              onChange={(event) => {
+                setSpecialty(event.target.value);
+                setPage(1);
+              }}
               className="text-sm"
             >
               <option value="all">All consultation areas</option>
@@ -99,13 +123,25 @@ export function DoctorDirectory({ doctors }: { doctors: readonly Doctor[] }) {
           {query || specialty !== 'all' ? ' found' : ' to explore'}
         </p>
         {results.length ? (
-          <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {results.map((doctor) => (
-              <li key={doctor.id} className="flex min-w-0">
-                <DoctorCard doctor={doctor} />
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-6">
+            <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {paginatedResults.map((doctor) => (
+                <li key={doctor.id} className="flex min-w-0">
+                  <DoctorCard doctor={doctor} />
+                </li>
+              ))}
+            </ul>
+
+            {/* Right-Aligned Pagination */}
+            <DataTablePagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={results.length}
+              pageSize={pageSize}
+              onPageChange={setPage}
+              className="pt-4 border-t border-line/60"
+            />
+          </div>
         ) : (
           <EmptyState
             title="No matching profiles"

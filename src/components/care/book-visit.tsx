@@ -1,26 +1,60 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useState } from 'react';
 import { submitEnquiry } from '@/app/enquiry-actions';
 import { Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Toast } from '@/components/ui/toast';
 
 export function BookVisit({ careName }: { careName?: string }) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [date, setDate] = useState('');
-  const [status, submit, pending] = useActionState(
-    submitEnquiry.bind(null, 'Visit request'),
-    '',
-  );
+
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErrorMessage(null);
+    setSubmitting(true);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const res = await submitEnquiry('Visit request', '', formData);
+      if (res && (res.includes('received') || res.includes('sent'))) {
+        setToastMessage('Appointment request received!');
+        setName('');
+        setPhone('');
+        setEmail('');
+        setDate('');
+      } else {
+        setErrorMessage(res || 'Please verify your details and try again.');
+      }
+    } catch {
+      setErrorMessage('Could not send request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
     <section
       id="book-your-visit"
       aria-labelledby="book-visit-heading"
       className="scroll-mt-36 border-t border-line bg-canvas py-12 sm:py-16 lg:scroll-mt-48"
     >
+      {/* Top-Right Success Toast Notification */}
+      <Toast
+        message={toastMessage}
+        onClose={() => setToastMessage(null)}
+        duration={4000}
+      />
+
       <Container>
         <div className="grid gap-8 rounded-sm border-t-2 border-action bg-panel p-5 sm:p-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.7fr)] lg:gap-14 lg:p-10">
           <div>
@@ -39,16 +73,21 @@ export function BookVisit({ careName }: { careName?: string }) {
               your visit.
             </p>
           </div>
-          <form action={submit}>
+          <form onSubmit={handleSubmit}>
             <input type="hidden" name="topic" value={careName ?? ''} />
             <input
               type="hidden"
               name="message"
               value={date ? 'Preferred date: ' + date : ''}
             />
-            <p role="status" className="text-sm text-action">
-              {status}
-            </p>
+
+            {/* Inline Error Message (only on invalid input) */}
+            {errorMessage && (
+              <p role="alert" className="mb-4 text-xs text-negative">
+                {errorMessage}
+              </p>
+            )}
+
             <div className="grid gap-4 sm:grid-cols-6">
               <div className="sm:col-span-3">
                 <label
@@ -147,10 +186,11 @@ export function BookVisit({ careName }: { careName?: string }) {
               <Button
                 type="submit"
                 variant="booking"
-                disabled={pending || !name.trim() || !phone.trim()}
-                className="shrink-0 gap-6"
+                disabled={submitting || !name.trim() || !phone.trim()}
+                className="shrink-0 gap-6 cursor-pointer"
               >
-                Request a visit <span aria-hidden="true">&rarr;</span>
+                {submitting ? 'Sending request...' : 'Request a visit'}{' '}
+                <span aria-hidden="true">&rarr;</span>
               </Button>
             </div>
           </form>

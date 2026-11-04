@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import type { GalleryPhoto } from '@/config/gallery';
+import { DataTablePagination } from '@/components/ui/data-table-pagination';
 
 interface GalleryGridProps {
   photos: GalleryPhoto[];
@@ -11,6 +12,8 @@ interface GalleryGridProps {
 
 export function GalleryGrid({ photos }: GalleryGridProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [page, setPage] = useState(1);
+  const pageSize = 9;
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -24,6 +27,14 @@ export function GalleryGrid({ photos }: GalleryGridProps) {
     if (selectedCategory === 'All') return photos;
     return photos.filter((p) => p.category === selectedCategory);
   }, [photos, selectedCategory]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredPhotos.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+
+  const paginatedPhotos = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredPhotos.slice(start, start + pageSize);
+  }, [filteredPhotos, currentPage, pageSize]);
 
   return (
     <div className="space-y-8">
@@ -39,8 +50,11 @@ export function GalleryGrid({ photos }: GalleryGridProps) {
             <button
               key={category}
               type="button"
-              onClick={() => setSelectedCategory(category)}
-              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium transition-all ${
+              onClick={() => {
+                setSelectedCategory(category);
+                setPage(1);
+              }}
+              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium transition-all cursor-pointer ${
                 isActive
                   ? 'bg-action text-white shadow-sm'
                   : 'bg-panel/70 text-muted hover:bg-panel hover:text-ink'
@@ -63,7 +77,7 @@ export function GalleryGrid({ photos }: GalleryGridProps) {
 
       {/* Gallery Cards Grid */}
       <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredPhotos.map((photo) => (
+        {paginatedPhotos.map((photo) => (
           <li
             key={photo.id}
             id={photo.id}
@@ -129,7 +143,16 @@ export function GalleryGrid({ photos }: GalleryGridProps) {
           </li>
         ))}
       </ul>
+
+      {/* Pagination Bar (Right-Aligned) */}
+      <DataTablePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filteredPhotos.length}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        className="pt-4 border-t border-border/60"
+      />
     </div>
   );
 }
-

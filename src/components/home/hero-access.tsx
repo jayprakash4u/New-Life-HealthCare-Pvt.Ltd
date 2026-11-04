@@ -1,18 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { Suspense, useActionState, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getCareRequestHref } from '@/lib/care-request';
 import { submitEnquiry } from '@/app/enquiry-actions';
 import { Input } from '@/components/ui/input';
 import { treatments } from '@/config/treatments';
-import { services } from '@/config/services';
 import { doctors, type Doctor } from '@/config/doctors';
 import { Container } from '@/components/ui/container';
 import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { CareIcon, type CareIconName } from '@/components/ui/care-icon';
+import { Toast } from '@/components/ui/toast';
 
 const shortcuts: Array<{
   title: string;
@@ -28,9 +28,21 @@ const shortcuts: Array<{
   },
   {
     title: 'Child & family care',
-    detail: 'Care for your family',
+    detail: 'Pediatric care',
     href: getCareRequestHref('child-family-health'),
     icon: 'family',
+  },
+  {
+    title: 'Gynecology',
+    detail: 'Women’s health',
+    href: getCareRequestHref('gynecology'),
+    icon: 'gynecology',
+  },
+  {
+    title: 'Diabetes & BP',
+    detail: 'Ongoing health',
+    href: getCareRequestHref('diabetes-bp-gastric-care'),
+    icon: 'heart',
   },
   {
     title: 'ENT care',
@@ -39,22 +51,10 @@ const shortcuts: Array<{
     icon: 'hearing',
   },
   {
-    title: 'Laboratory',
-    detail: 'Tests & reports',
-    href: getCareRequestHref('laboratory'),
-    icon: 'lab',
-  },
-  {
-    title: 'Pharmacy',
-    detail: 'At New Life',
-    href: getCareRequestHref('pharmacy'),
-    icon: 'pharmacy',
-  },
-  {
-    title: 'Flu vaccination',
-    detail: 'Enquire with our team',
-    href: getCareRequestHref('flu-vaccination'),
-    icon: 'vaccination',
+    title: 'Gastroenterology',
+    detail: 'Digestive care',
+    href: getCareRequestHref('gastroenterology'),
+    icon: 'digestive',
   },
 ];
 
@@ -66,22 +66,47 @@ export function HeroAccess({
   roster?: readonly Doctor[];
 }) {
   const [care, setCare] = useState(() =>
-    [...treatments, ...services].some((item) => item.id === initialCare)
-      ? initialCare
-      : '',
+    treatments.some((item) => item.id === initialCare) ? initialCare : '',
   );
-  const selected = [...treatments, ...services].find(
-    (item) => item.id === care,
-  );
+  const selected = treatments.find((item) => item.id === care);
   const [doctorId, setDoctorId] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+
   const availableDoctors = roster.filter((doctor) => doctor.careId === care);
   const selectedDoctor = availableDoctors.find(
     (doctor) => doctor.id === doctorId,
   );
-  const [status, submit, pending] = useActionState(
-    submitEnquiry.bind(null, 'Visit request'),
-    '',
-  );
+
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErrorMessage(null);
+    setSubmitting(true);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const res = await submitEnquiry('Visit request', '', formData);
+      if (res && (res.includes('received') || res.includes('sent'))) {
+        setToastMessage('Appointment request received! We will call to confirm.');
+        setName('');
+        setPhone('');
+        setCare('');
+        setDoctorId('');
+      } else {
+        setErrorMessage(res || 'Please verify your details and try again.');
+      }
+    } catch {
+      setErrorMessage('Could not send request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <section
@@ -89,9 +114,16 @@ export function HeroAccess({
       aria-label="Appointments and care options"
       className="scroll-mt-36 border-b border-line bg-soft py-6 sm:py-8 lg:scroll-mt-48 lg:py-10"
     >
+      {/* Top-Right Floating Success Toast */}
+      <Toast
+        message={toastMessage}
+        onClose={() => setToastMessage(null)}
+        duration={5000}
+      />
+
       <Container>
         <form
-          action={submit}
+          onSubmit={handleSubmit}
           aria-label="Request an appointment"
           className="min-w-0 rounded-md border border-line bg-canvas p-4 shadow-sm sm:p-6"
         >
@@ -110,7 +142,7 @@ export function HeroAccess({
           <div className="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.85fr)]">
             <div className="min-w-0">
               <label htmlFor="appointment-care" className="sr-only">
-                Treatment or service
+                Treatment
               </label>
               <Select
                 id="appointment-care"
@@ -123,22 +155,13 @@ export function HeroAccess({
                 className="min-h-14 min-w-0 max-w-full truncate border-line bg-panel py-3.5 pr-8 pl-3 text-sm sm:pl-4"
               >
                 <option value="" disabled>
-                  Select treatment or service
+                  Select treatment
                 </option>
-                <optgroup label="Treatments & consultations">
-                  {treatments.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.title}
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label="Services">
-                  {services.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.title}
-                    </option>
-                  ))}
-                </optgroup>
+                {treatments.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                  </option>
+                ))}
               </Select>
             </div>
             <div className="min-w-0">
@@ -170,43 +193,86 @@ export function HeroAccess({
             <Button
               type="submit"
               variant="primary"
-              className="min-h-14 w-full min-w-0 gap-2 px-3 text-sm sm:gap-3 sm:px-4"
-              disabled={pending}
+              className="min-h-14 w-full min-w-0 gap-2 px-3 text-sm sm:gap-3 sm:px-4 cursor-pointer"
+              disabled={submitting}
             >
-              Request an appointment
-              <svg
-                className="shrink-0"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                aria-hidden="true"
-              >
-                <path d="M4 12h16m-6-6 6 6-6 6" />
-              </svg>
+              {submitting ? (
+                <>
+                  <svg
+                    className="size-4 animate-spin shrink-0 text-white"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    />
+                  </svg>
+                  <span>Submitting...</span>
+                </>
+              ) : (
+                <>
+                  <span>Request an appointment</span>
+                  <svg
+                    className="shrink-0"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 12h16m-6-6 6 6-6 6" />
+                  </svg>
+                </>
+              )}
             </Button>
           </div>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <label className="grid gap-1 text-sm font-medium">
               Your name
-              <Input name="name" autoComplete="name" required maxLength={100} />
+              <Input
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                autoComplete="name"
+                required
+                maxLength={100}
+                placeholder="Full name"
+              />
             </label>
             <label className="grid gap-1 text-sm font-medium">
               Phone number
               <Input
                 name="phone"
                 type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 autoComplete="tel"
                 required
                 maxLength={32}
+                placeholder="Mobile number"
               />
             </label>
           </div>
-          <p role="status" className="mt-2 text-sm text-action">
-            {status}
-          </p>
+
+          {/* Inline Error Message (only if validation fails) */}
+          {errorMessage && (
+            <p role="alert" className="mt-2.5 text-xs text-negative">
+              {errorMessage}
+            </p>
+          )}
+
           <p className="mt-2 text-xs text-muted">
             The clinic will call to confirm availability.
           </p>

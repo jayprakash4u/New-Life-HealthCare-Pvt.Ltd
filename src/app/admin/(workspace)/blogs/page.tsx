@@ -1,17 +1,9 @@
-import { HomepageCheckbox } from '@/components/admin/homepage-checkbox';
-import { getHomepageVisibility } from '@/lib/homepage-visibility';
-import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { requireAdmin } from '@/lib/admin-auth';
 import { getPublishedArticles } from '@/lib/admin-content';
+import { getHomepageVisibility } from '@/lib/homepage-visibility';
 import { deleteArticle } from '../../actions';
+import { BlogsTable } from '@/components/admin/blogs-table';
 
 export default async function AdminBlogs({
   searchParams,
@@ -27,6 +19,16 @@ export default async function AdminBlogs({
     'blog',
     articles.map(({ id }) => id),
   );
+
+  const visibilityMap: Record<string, boolean> = {};
+  for (const article of articles) {
+    visibilityMap[article.id] = visibility.get(article.id) ?? true;
+  }
+
+  const handleDelete = async (id: string) => {
+    'use server';
+    await deleteArticle(id);
+  };
 
   return (
     <div className="space-y-5">
@@ -108,149 +110,12 @@ export default async function AdminBlogs({
         </div>
       )}
 
-      {/* Articles Table */}
-      <div className="overflow-hidden rounded-lg border border-line bg-canvas shadow-2xs">
-        {articles.length === 0 ? (
-          <div className="p-8 text-center text-xs text-muted">
-            No published articles found.
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="border-b border-line bg-panel/75 text-[11px] font-medium text-muted">
-                  <th scope="col" className="px-4 py-3">
-                    Article
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Category
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Show on Homepage
-                  </th>
-                  <th scope="col" className="px-3 py-3">
-                    Status
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-right">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-line">
-                {articles.map((article) => {
-                  const isFeatured = visibility.get(article.id) ?? true;
-                  return (
-                    <tr
-                      key={article.id}
-                      className="transition-colors hover:bg-panel/30"
-                    >
-                      {/* Media & Title */}
-                      <td className="px-4 py-3.5">
-                        <div className="flex items-center gap-3">
-                          <div className="relative h-11 w-16 shrink-0 overflow-hidden rounded-md border border-line bg-panel">
-                            <Image
-                              src={article.image}
-                              alt=""
-                              fill
-                              sizes="64px"
-                              className="object-cover"
-                            />
-                          </div>
-                          <div className="min-w-0 max-w-[280px]">
-                            <span className="block font-medium text-ink truncate">
-                              {article.title}
-                            </span>
-                            <span className="block text-[11px] font-mono text-muted truncate">
-                              /blogs/{article.id}
-                            </span>
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Category */}
-                      <td className="px-4 py-3.5 whitespace-nowrap">
-                        <span className="rounded bg-soft px-2 py-0.5 text-xs text-action font-medium">
-                          {article.category}
-                        </span>
-                      </td>
-
-                      {/* Homepage toggle */}
-                      <td className="px-4 py-3.5 whitespace-nowrap">
-                        <HomepageCheckbox
-                          kind="blog"
-                          id={article.id}
-                          title={article.title}
-                          visible={isFeatured}
-                        />
-                      </td>
-
-                      {/* Status */}
-                      <td className="px-3 py-3.5 whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 text-xs text-emerald-700">
-                          <span className="size-1.5 rounded-full bg-emerald-500"></span>
-                          Published
-                        </span>
-                      </td>
-
-                      {/* Actions */}
-                      <td className="px-4 py-3.5 text-right whitespace-nowrap">
-                        <div className="inline-flex items-center gap-2">
-                          <Link
-                            href={article.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="rounded border border-line bg-canvas px-2.5 py-1 text-xs text-muted hover:border-action hover:text-action transition-colors"
-                          >
-                            View ↗
-                          </Link>
-                          <Link
-                            href={`/admin/pages/blog-${article.id}`}
-                            className="rounded bg-soft px-2.5 py-1 text-xs font-medium text-action hover:bg-action hover:text-white transition-colors"
-                          >
-                            Edit
-                          </Link>
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="text-negative hover:bg-red-50 text-xs px-2 h-7"
-                              >
-                                Delete
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent
-                              title="Delete article?"
-                              description={`Remove “${article.title}” from the public website.`}
-                            >
-                              <form
-                                action={deleteArticle.bind(
-                                  null,
-                                  `blog-${article.id}`,
-                                )}
-                                className="flex justify-end gap-3"
-                              >
-                                <DialogClose asChild>
-                                  <Button variant="outline" type="button">
-                                    Cancel
-                                  </Button>
-                                </DialogClose>
-                                <Button type="submit" variant="danger">
-                                  Delete article
-                                </Button>
-                              </form>
-                            </DialogContent>
-                          </Dialog>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+      {/* Articles DataTable */}
+      <BlogsTable
+        articles={articles}
+        visibilityMap={visibilityMap}
+        onDelete={handleDelete}
+      />
     </div>
   );
 }
