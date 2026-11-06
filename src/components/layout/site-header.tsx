@@ -3,8 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useKeyboardOffset } from '@/hooks/use-keyboard-offset';
+import { useState } from 'react';
 import {
   contactLink,
   isNavigationActive,
