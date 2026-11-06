@@ -10,6 +10,8 @@ export type ModalContentProps = Omit<
 > & {
   title: string;
   description?: ReactNode;
+  headingGraphic?: ReactNode;
+  bodyClassName?: string;
   closeLabel?: string;
 };
 
@@ -17,6 +19,8 @@ export type ModalContentProps = Omit<
 export function ModalContent({
   title,
   description,
+  headingGraphic,
+  bodyClassName,
   closeLabel = 'Close',
   children,
   className,
@@ -31,6 +35,7 @@ export function ModalContent({
     <Primitive.Portal>
       <Primitive.Overlay className="fixed inset-0 z-40 bg-ink/45" />
       <Primitive.Content
+        {...(!description && { 'aria-describedby': undefined })}
         {...props}
         className={cn(
           'fixed z-50 flex flex-col overflow-hidden border border-line bg-raised text-ink shadow-xl',
@@ -42,8 +47,16 @@ export function ModalContent({
           className,
         )}
       >
-        <div className="grid shrink-0 gap-2 border-b border-line p-6 pr-16">
-          <Primitive.Title className="text-xl font-semibold">
+        <div
+          className={cn(
+            'grid shrink-0 gap-2 border-b border-line p-6 pr-16',
+            headingGraphic ? 'min-h-18 content-center px-5 py-2' : undefined,
+          )}
+        >
+          {headingGraphic}
+          <Primitive.Title
+            className={headingGraphic ? 'sr-only' : 'text-xl font-semibold'}
+          >
             {title}
           </Primitive.Title>
           {description && (
@@ -52,7 +65,12 @@ export function ModalContent({
             </Primitive.Description>
           )}
         </div>
-        <div className="min-h-0 overflow-y-auto overscroll-contain p-6">
+        <div
+          className={cn(
+            'min-h-0 overflow-y-auto overscroll-contain p-6',
+            bodyClassName,
+          )}
+        >
           {children}
         </div>
         <Primitive.Close

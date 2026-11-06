@@ -20,6 +20,7 @@ import { Container } from '@/components/ui/container';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { DesktopNavigation } from './desktop-navigation';
 import { HomeMobileActions } from './home-mobile-actions';
+import styles from './site-header.module.css';
 import {
   HeaderArrow,
   HeaderMessage,
@@ -190,18 +191,29 @@ export function SiteHeader({
             </a>
             {!hasMobileActions && menuTrigger}
             <DrawerContent
+              side="left"
               title="Explore New Life"
-              description="Care, with you at the centre."
-              className="w-[min(100vw,26rem)]"
+              closeLabel="Close navigation menu"
+              headingGraphic={
+                <Image
+                  src="/brand/new-life-health-care.png"
+                  alt="New Life Health Care"
+                  width={90}
+                  height={62}
+                  className="h-auto w-20"
+                />
+              }
+              className={styles.mobileDrawer}
+              bodyClassName="px-5 pt-0 pb-5"
             >
-              <nav aria-label="Mobile navigation" className="-mt-2">
+              <nav aria-label="Mobile navigation">
                 {withAddedCare(navigation, additions).map((item) =>
                   'children' in item ? (
                     <details
                       key={item.label}
                       className="group border-b border-line"
                     >
-                      <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-ink marker:content-none hover:text-action [&::-webkit-details-marker]:hidden">
+                      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-medium text-ink marker:content-none hover:text-action [&::-webkit-details-marker]:hidden">
                         {item.label}
                         <svg
                           className="text-action transition-transform group-open:rotate-180"
@@ -241,14 +253,13 @@ export function SiteHeader({
                           : undefined
                       }
                       className={cn(
-                        'flex min-h-16 items-center justify-between gap-4 border-b border-line py-4 text-base font-semibold hover:text-action',
+                        'flex min-h-12 items-center justify-between gap-3 border-b border-line py-3 text-sm font-medium hover:text-action',
                         isNavigationActive(pathname, item.href)
                           ? 'text-action'
                           : 'text-ink',
                       )}
                     >
                       {item.label}
-                      <HeaderArrow className="text-action" />
                     </Link>
                   ),
                 )}

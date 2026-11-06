@@ -1,0 +1,21 @@
+.mobileDrawer {
+  width: min(84vw, 23rem);
+  border-block: 0;
+  border-inline-start: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mobileDrawer[data-state='open'] {
+    animation: enter 180ms ease-out;
+  }
+}
+
+@keyframes enter {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
