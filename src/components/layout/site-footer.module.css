@@ -1,16 +1,23 @@
 @media (width < 40rem) {
   :global([data-home-mobile-actions='home']) ~ .footer {
+    --footer-text: #e6efed;
+    --footer-muted: #b9ccca;
+    --footer-rule: rgb(255 255 255 / 18%);
+    background: var(--color-text);
+    color: var(--footer-text);
+
     .banner {
-      padding-block: 1.5rem;
-      background: var(--color-background);
+      padding-block: 1.5rem 1.75rem;
+      border: 0;
+      background: var(--color-primary-soft);
     }
 
     .invitation {
       gap: 1rem;
-      padding: 1.25rem;
-      border-color: transparent;
-      border-radius: var(--radius-md);
-      background: var(--color-text);
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .eyebrow {
@@ -19,13 +26,14 @@
 
     .invitation h2 {
       margin: 0;
-      color: white;
+      color: var(--color-text);
+      font-size: 1.5rem;
       line-height: 1.25;
     }
 
     .invitation p {
       margin-block-start: 0.5rem;
-      color: #d9e3e0;
+      color: var(--color-text-muted);
       font-size: 0.875rem;
     }
 
@@ -40,12 +48,12 @@
     }
 
     .directory {
-      padding-block: 1.75rem;
+      padding-block: 1.75rem 1.5rem;
     }
 
     .columns {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.5rem 1rem;
+      gap: 1.25rem 1rem;
     }
 
     .profile,
@@ -54,16 +62,42 @@
     }
 
     .profile img {
-      width: 7rem;
+      width: 6rem;
+    }
+
+    .profile {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .profile > * {
+      margin: 0;
+    }
+
+    .profile > a {
+      padding: 0.25rem;
+      border-radius: var(--radius-md);
+      background: white;
+    }
+
+    .profile > div {
+      grid-column: 1 / -1;
     }
 
     .profile p {
       font-size: 0.875rem;
+      color: var(--footer-text);
     }
 
     .hours {
       max-width: none;
+      border-color: var(--footer-rule);
       border-radius: var(--radius-md);
+      background: rgb(255 255 255 / 5%);
+      color: var(--footer-muted);
+      box-shadow: none;
     }
 
     .hours > div:last-child {
@@ -72,7 +106,7 @@
 
     .links,
     .contact {
-      border-top: 1px solid var(--color-border);
+      border-top: 1px solid var(--footer-rule);
       padding-block-start: 1rem;
     }
 
@@ -90,6 +124,7 @@
       align-items: center;
       overflow-wrap: anywhere;
       font-size: 0.8125rem;
+      color: var(--footer-text);
     }
 
     .contact a {
@@ -97,11 +132,44 @@
       min-height: 2.75rem;
       align-items: center;
       overflow-wrap: anywhere;
+      color: var(--footer-text);
     }
 
     .contact a[aria-label] {
       min-width: 2.75rem;
       border-radius: var(--radius-md);
+    }
+
+    .hours :global(.text-ink),
+    .links h3,
+    .contact :is(h3, p) {
+      color: white;
+    }
+
+    .directory :global(.text-muted):not(p, a),
+    .legal :global(.text-muted) {
+      color: var(--footer-muted);
+    }
+
+    .directory :global(.text-action) {
+      color: #8bdbcf;
+    }
+
+    .hours :global(.border-line\/60) {
+      border-color: var(--footer-rule);
+    }
+
+    .legal {
+      border-color: var(--footer-rule);
+      background: transparent;
+      color: var(--footer-muted);
+    }
+
+    .legal a {
+      display: inline-flex;
+      min-height: 2.75rem;
+      align-items: center;
+      color: var(--footer-text);
     }
   }
 }

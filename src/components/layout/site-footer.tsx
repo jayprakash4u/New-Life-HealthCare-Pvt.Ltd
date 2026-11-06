@@ -200,11 +200,10 @@ export function SiteFooter() {
                 Compassionate Healthcare in Imadol
               </span>
               <h2 className="mt-2.5 text-xl font-bold tracking-tight text-ink sm:text-2xl">
-                Need medical guidance or ready to schedule your visit?
+                Plan your visit
               </h2>
               <p className="mt-1 text-xs sm:text-sm text-muted">
-                Our general physicians, specialists, and diagnostics lab in
-                Lalitpur are here to assist your family.
+                Request an appointment or speak with our team in Imadol.
               </p>
             </div>
 
@@ -253,10 +252,7 @@ export function SiteFooter() {
                 />
               </Link>
               <p className="text-xs leading-relaxed text-muted max-w-sm">
-                A patient-centered multidisciplinary polyclinic and diagnostic
-                facility in Imadol, Lalitpur. Dedicated to high-standard
-                consultations, specialized clinical care, and reliable
-                diagnostics.
+                Consultations and diagnostics in Imadol, Lalitpur.
               </p>
 
               {/* Operating Hours Card */}
@@ -545,7 +541,7 @@ export function SiteFooter() {
       </div>
 
       {/* 3. Bottom Bar: Legal, Rights & Quick Admin */}
-      <div className="border-t border-line bg-canvas/80 py-5 text-xs text-muted">
+      <div className={`${styles.legal} border-t border-line bg-canvas/80 py-5 text-xs text-muted`}>
         <Container>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
