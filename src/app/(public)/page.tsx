@@ -7,6 +7,8 @@ import { ClinicIntroduction } from '@/components/home/clinic-introduction';
 import { LifeAtNewLife } from '@/components/home/life-at-new-life';
 import { WhyChooseUs } from '@/components/home/why-choose-us';
 import { HomeFaq } from '@/components/home/home-faq';
+import { SpecialtiesGrid } from '@/components/home/specialties-grid';
+import { GalleryPreview } from '@/components/home/gallery-preview';
 import { OurDoctors } from '@/components/about/our-doctors';
 
 export default async function Home() {
@@ -29,8 +31,12 @@ export default async function Home() {
     <>
       <HeroSection copy={copy} />
       {sections.get('doctors') !== false && <OurDoctors homepage />}
-      {sections.get('introduction') !== false && <ClinicIntroduction />}
-      {sections.get('videos') !== false && <LifeAtNewLife />}
+      {sections.get('specialties') !== false && <SpecialtiesGrid />}
+      <div className="bg-canvas [--clinic-feature-teal:#167473]">
+        {sections.get('introduction') !== false && <ClinicIntroduction />}
+        {sections.get('videos') !== false && <LifeAtNewLife />}
+      </div>
+      {sections.get('gallery') !== false && <GalleryPreview />}
       {sections.get('why-choose-us') !== false && <WhyChooseUs />}
       {sections.get('blog') !== false && featuredArticles.length > 0 && (
         <HealthJournal items={featuredArticles} />

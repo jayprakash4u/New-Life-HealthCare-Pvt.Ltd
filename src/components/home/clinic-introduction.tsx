@@ -11,16 +11,16 @@ export async function ClinicIntroduction() {
   return (
     <section
       aria-labelledby="clinic-introduction-heading"
-      className="border-y border-line bg-panel py-8 sm:py-12 lg:py-16"
+      className="pt-9 sm:pt-12"
     >
-      <Container className="grid items-center gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12">
-        <div className="min-w-0">
-          <p className="mb-2.5 text-xs font-semibold tracking-wide text-action uppercase">
+      <Container className="grid items-center gap-5 md:grid-cols-2 md:gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(12rem,0.58fr)]">
+        <div className="min-w-0 lg:pb-10">
+          <p className="mb-3 text-xs font-semibold tracking-widest text-action uppercase">
             Our clinic in Imadol
           </p>
           <h2
             id="clinic-introduction-heading"
-            className="max-w-xl text-[clamp(1.75rem,4.5vw,2.75rem)] leading-tight font-semibold tracking-tight text-ink"
+            className="max-w-[18ch] text-[clamp(1.875rem,4vw,3rem)] leading-[1.12] font-semibold tracking-tight text-balance text-ink"
           >
             {copy?.title ?? 'Care that starts with listening'}
           </h2>
@@ -30,46 +30,45 @@ export async function ClinicIntroduction() {
           </p>
           <Link
             href="/#plan-your-visit"
-            className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-action underline-offset-4 hover:underline"
+            className="mt-5 inline-flex min-h-11 items-center gap-3 rounded-md bg-action px-4 text-sm font-semibold text-on-action hover:bg-action-hover"
           >
             Plan your visit
             <HeaderArrow />
           </Link>
         </div>
-
-        <div className="min-w-0 overflow-hidden rounded-md border border-line bg-canvas">
-          <div className="relative aspect-[16/9] bg-soft">
-            <Image
-              src={copy?.image ?? '/brand/hero-poster.jpg'}
-              alt={
-                copy?.image
-                  ? (copy.imageAlt ?? '')
-                  : 'Reception at New Life Health Care'
-              }
-              fill
-              sizes="(min-width: 1024px) 50vw, 92vw"
-              className="object-cover object-center"
-            />
-          </div>
-          <dl
-            aria-label="New Life at a glance"
-            className="grid grid-cols-3 divide-x divide-line border-t border-line py-3 sm:py-4"
-          >
-            {clinicFacts.map((fact) => (
-              <div
-                key={fact.label}
-                className="flex min-w-0 flex-col items-center gap-1 px-1 text-center sm:px-3"
-              >
-                <dt className="text-xs leading-snug text-muted">
-                  {fact.label}
-                </dt>
-                <dd className="order-first text-2xl leading-none font-semibold text-action sm:text-3xl">
-                  {fact.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+        <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-panel lg:mb-10 lg:aspect-[4/3]">
+          <Image
+            src={copy?.image ?? '/brand/hero-poster.jpg'}
+            alt={
+              copy?.image
+                ? (copy.imageAlt ?? '')
+                : 'Reception at New Life Health Care'
+            }
+            fill
+            sizes="(min-width: 1024px) 38vw, (min-width: 768px) 46vw, 92vw"
+            className="object-cover"
+          />
         </div>
+        <dl
+          aria-label="New Life at a glance"
+          className="grid grid-cols-3 divide-x divide-white/25 rounded-t-lg bg-(--clinic-feature-teal) px-2 py-4 text-white md:col-span-2 lg:col-span-1 lg:grid-cols-1 lg:content-center lg:divide-x-0 lg:divide-y lg:self-stretch lg:px-6"
+        >
+          {clinicFacts.map((fact) => (
+            <div
+              key={fact.label}
+              className="relative flex min-w-0 flex-col gap-1 px-2 text-center lg:px-2 lg:py-4 lg:text-left"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute top-1/2 -left-9 hidden size-6 -translate-y-1/2 rounded-full bg-linear-to-r from-[#184975] to-[#35a9a1] lg:block"
+              />
+              <dt className="text-xs leading-snug font-medium">{fact.label}</dt>
+              <dd className="order-first text-2xl leading-none font-semibold tabular-nums sm:text-3xl lg:text-4xl">
+                {fact.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </Container>
     </section>
   );

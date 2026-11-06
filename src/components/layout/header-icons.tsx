@@ -55,6 +55,15 @@ export function HeaderPin() {
   );
 }
 
+export function HeaderSearch() {
+  return (
+    <Icon>
+      <circle cx="10.5" cy="10.5" r="5.5" />
+      <path d="m15 15 5 5" />
+    </Icon>
+  );
+}
+
 export function HeaderDoctors() {
   return (
     <Icon>

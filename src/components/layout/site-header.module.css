@@ -1,3 +1,21 @@
+.logo {
+  display: block;
+  width: 84px;
+  height: auto;
+}
+
+@media (min-width: 40rem) {
+  .logo {
+    width: 112px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .logo {
+    width: 128px;
+  }
+}
+
 .mobileDrawer {
   width: min(84vw, 23rem);
   border-block: 0;

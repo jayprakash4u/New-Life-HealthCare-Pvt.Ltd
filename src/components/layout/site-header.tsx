@@ -26,7 +26,11 @@ import {
   HeaderMessage,
   HeaderPhone,
   HeaderPin,
+  HeaderSearch,
 } from './header-icons';
+
+const mobileShortcutClass =
+  'flex min-h-12 min-w-0 flex-col items-center justify-center gap-1 px-1 text-center text-[11px] leading-tight font-semibold hover:bg-soft';
 
 export function SiteHeader({
   additions = [],
@@ -35,7 +39,6 @@ export function SiteHeader({
 }) {
   const pathname = usePathname() ?? '/';
   const [menuOpen, setMenuOpen] = useState(false);
-  const compactMobileHeader = pathname === '/' || pathname === '/doctors';
   const menuTrigger = (
     <DrawerTrigger asChild>
       <Button className="gap-3 px-3.5" aria-label="Open navigation menu">
@@ -62,25 +65,9 @@ export function SiteHeader({
       >
         Skip to content
       </a>
-      <header
-        className={cn(
-          'sticky top-0 z-30 bg-canvas shadow-sm',
-          pathname === '/' && 'max-sm:border-b max-sm:border-line',
-        )}
-      >
-        <Container
-          className={cn(
-            'flex min-h-24 items-center justify-between gap-6 lg:min-h-29',
-            compactMobileHeader && 'max-sm:min-h-20',
-            pathname === '/' && 'max-sm:min-h-[4.25rem]',
-          )}
-        >
-          <div
-            className={cn(
-              'flex shrink-0 items-center gap-7 py-2.5',
-              pathname === '/' && 'max-sm:py-0',
-            )}
-          >
+      <header className="sticky top-0 z-30 bg-canvas shadow-sm max-lg:border-b-2 max-lg:border-action">
+        <Container className="flex min-h-[4.5rem] items-center justify-between gap-2 sm:gap-6 lg:min-h-29">
+          <div className="flex shrink-0 items-center gap-7 py-1 lg:py-2.5">
             <Link
               href="/"
               aria-label="New Life Health Care — home"
@@ -89,13 +76,11 @@ export function SiteHeader({
               <Image
                 src="/brand/new-life-logo-transparent.png"
                 alt="New Life Health Care Pvt. Ltd."
-                width={599}
-                height={416}
+                width={128}
+                height={89}
+                sizes="(min-width: 1024px) 128px, (min-width: 640px) 112px, 84px"
                 priority
-                className={cn(
-                  'h-auto w-28 lg:w-32',
-                  compactMobileHeader && 'max-sm:w-24',
-                )}
+                className={styles.logo}
               />
             </Link>
             <p className="hidden border-l border-line py-2 pl-7 text-[17px] leading-snug font-medium text-ink xl:block">
@@ -172,23 +157,35 @@ export function SiteHeader({
             </div>
           </div>
 
-          <div className="flex items-center gap-3 lg:hidden">
-            <a
-              href={contactConfig.phone.href}
-              aria-label={`Call ${contactConfig.phone.label}`}
-              className={cn(
-                'inline-flex size-11 items-center justify-center rounded-md border border-line text-action hover:bg-soft',
-                pathname === '/' &&
-                  'max-sm:w-auto max-sm:gap-2 max-sm:border-action max-sm:bg-action max-sm:px-3 max-sm:text-on-action max-sm:hover:bg-action-hover',
-              )}
+          <div className="min-w-0 flex-1 sm:flex-none lg:hidden">
+            <nav
+              aria-label="Clinic shortcuts"
+              className="grid grid-cols-3 items-stretch divide-x divide-line text-action sm:w-72"
             >
-              <HeaderPhone />
-              {pathname === '/' && (
-                <span className="text-xs font-semibold sm:hidden">
-                  Call clinic
-                </span>
-              )}
-            </a>
+              <Link
+                href="/doctors"
+                aria-current={pathname === '/doctors' ? 'page' : undefined}
+                className={mobileShortcutClass}
+              >
+                <HeaderSearch />
+                Find doctor
+              </Link>
+              <Link
+                href="/our-location"
+                aria-current={pathname === '/our-location' ? 'page' : undefined}
+                className={mobileShortcutClass}
+              >
+                <HeaderPin />
+                Directions
+              </Link>
+              <a
+                href={contactConfig.phone.href}
+                className={`${mobileShortcutClass} bg-soft hover:bg-soft-hover`}
+              >
+                <HeaderPhone />
+                Call clinic
+              </a>
+            </nav>
             <DrawerContent
               side="left"
               title="Explore New Life"
@@ -308,23 +305,6 @@ export function SiteHeader({
             <DesktopNavigation pathname={pathname} additions={additions} />
           </Container>
         </div>
-        {!compactMobileHeader && (
-          <div className="border-t border-line bg-panel lg:hidden">
-            <Container className="flex min-h-9 items-center justify-between gap-3 text-[11px] font-medium text-muted">
-              <span>Imadol, Lalitpur</span>
-              <a
-                href={contactConfig.whatsapp.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp us (opens in a new tab)"
-                className="inline-flex min-h-9 items-center gap-2 text-action"
-              >
-                WhatsApp us
-                <HeaderArrow />
-              </a>
-            </Container>
-          </div>
-        )}
       </header>
       <MobileActions pathname={pathname}>{menuTrigger}</MobileActions>
     </Drawer>

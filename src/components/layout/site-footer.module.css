@@ -1,175 +1,39 @@
-@media (width < 40rem) {
-  :global([data-mobile-actions='home']) ~ .footer {
-    --footer-text: #e6efed;
-    --footer-muted: #b9ccca;
-    --footer-rule: rgb(255 255 255 / 18%);
-    background: var(--color-text);
-    color: var(--footer-text);
+.footer {
+  background-color: #225658;
+  color: #e0eeee;
+}
 
-    .banner {
-      padding-block: 1.5rem 1.75rem;
-      border: 0;
-      background: var(--color-primary-soft);
-    }
+.footer a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
 
-    .invitation {
-      gap: 1rem;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      box-shadow: none;
-    }
+.footer .brand,
+.footer .social,
+.footer a:hover {
+  color: white;
+}
 
-    .eyebrow {
-      display: none;
-    }
+.footer a:hover {
+  text-decoration: underline;
+}
 
-    .invitation h2 {
-      margin: 0;
-      color: var(--color-text);
-      font-size: 1.5rem;
-      line-height: 1.25;
-    }
+.footer a:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
 
-    .invitation p {
-      margin-block-start: 0.5rem;
-      color: var(--color-text-muted);
-      font-size: 0.875rem;
-    }
+.social {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 8%);
+  transition: background-color 150ms ease;
+}
 
-    .ctas {
-      gap: 0.5rem;
-    }
-
-    .ctas a {
-      min-height: 2.75rem;
-      border-radius: var(--radius-md);
-      font-size: 0.875rem;
-    }
-
-    .directory {
-      padding-block: 1.75rem 1.5rem;
-    }
-
-    .columns {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.25rem 1rem;
-    }
-
-    .profile,
-    .contact {
-      grid-column: 1 / -1;
-    }
-
-    .profile img {
-      width: 6rem;
-    }
-
-    .profile {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .profile > * {
-      margin: 0;
-    }
-
-    .profile > a {
-      padding: 0.25rem;
-      border-radius: var(--radius-md);
-      background: white;
-    }
-
-    .profile > div {
-      grid-column: 1 / -1;
-    }
-
-    .profile p {
-      font-size: 0.875rem;
-      color: var(--footer-text);
-    }
-
-    .hours {
-      max-width: none;
-      border-color: var(--footer-rule);
-      border-radius: var(--radius-md);
-      background: rgb(255 255 255 / 5%);
-      color: var(--footer-muted);
-      box-shadow: none;
-    }
-
-    .hours > div:last-child {
-      font-size: 0.8125rem;
-    }
-
-    .links,
-    .contact {
-      border-top: 1px solid var(--footer-rule);
-      padding-block-start: 1rem;
-    }
-
-    .links ul {
-      margin-block-start: 0.25rem;
-    }
-
-    .links li {
-      margin: 0;
-    }
-
-    .links a {
-      display: flex;
-      min-height: 2.75rem;
-      align-items: center;
-      overflow-wrap: anywhere;
-      font-size: 0.8125rem;
-      color: var(--footer-text);
-    }
-
-    .contact a {
-      display: inline-flex;
-      min-height: 2.75rem;
-      align-items: center;
-      overflow-wrap: anywhere;
-      color: var(--footer-text);
-    }
-
-    .contact a[aria-label] {
-      min-width: 2.75rem;
-      border-radius: var(--radius-md);
-    }
-
-    .hours :global(.text-ink),
-    .links h3,
-    .contact :is(h3, p) {
-      color: white;
-    }
-
-    .directory :global(.text-muted):not(p, a),
-    .legal :global(.text-muted) {
-      color: var(--footer-muted);
-    }
-
-    .directory :global(.text-action) {
-      color: #8bdbcf;
-    }
-
-    .hours :global(.border-line\/60) {
-      border-color: var(--footer-rule);
-    }
-
-    .legal {
-      border-color: var(--footer-rule);
-      background: transparent;
-      color: var(--footer-muted);
-    }
-
-    .legal a {
-      display: inline-flex;
-      min-height: 2.75rem;
-      align-items: center;
-      color: var(--footer-text);
-    }
-  }
+.social:hover {
+  background-color: rgb(255 255 255 / 16%);
 }

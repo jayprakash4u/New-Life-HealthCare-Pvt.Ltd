@@ -16,6 +16,10 @@ const previews = {
     description:
       'Doctor portraits, consultation specialties, and appointment shortcuts.',
   },
+  specialties: {
+    image: '/media/treatments/general-consultation-demo.jpg',
+    description: 'Photo cards linking to clinic specialties and services.',
+  },
   introduction: {
     image: '/brand/hero-poster.jpg',
     description:
@@ -24,6 +28,10 @@ const previews = {
   videos: {
     image: '/media/journal/clinic-tour.jpg',
     description: 'Patient video guides and Life at New Life footage.',
+  },
+  gallery: {
+    image: '/media/gallery/0d2a8905.jpg',
+    description: 'A carousel of clinic photos with a link to the full gallery.',
   },
   'why-choose-us': {
     image: null,

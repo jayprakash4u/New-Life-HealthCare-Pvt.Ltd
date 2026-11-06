@@ -1,6 +1,7 @@
 import { getHomepageVisibility } from '@/lib/homepage-visibility';
 import Link from 'next/link';
 import { getClinicVideos } from '@/lib/content-library';
+import { HeaderArrow } from '@/components/layout/header-icons';
 import { Container } from '@/components/ui/container';
 import { ContentRail } from './content-rail';
 
@@ -16,46 +17,25 @@ export async function LifeAtNewLife() {
     <section
       id="life-at-new-life"
       aria-labelledby="life-at-new-life-heading"
-      className="relative isolate scroll-mt-28 overflow-hidden bg-ink py-10 text-white sm:py-14 lg:scroll-mt-48 lg:py-16"
+      className="scroll-mt-28 bg-(--clinic-feature-teal) py-8 text-white sm:py-12 lg:scroll-mt-48 lg:py-14"
     >
-      <svg
-        className="pointer-events-none absolute -right-10 -bottom-10 -z-10 w-[32rem] opacity-[0.06]"
-        viewBox="0 0 400 260"
-        fill="none"
-        stroke="white"
-        strokeWidth="1.5"
-        aria-hidden="true"
-      >
-        <circle cx="270" cy="130" r="115" />
-        <circle cx="270" cy="130" r="90" />
-        <path d="M0 140h120l25-40 30 80 35-120 35 80h155" />
-      </svg>
       <Container>
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-x-4 gap-y-1 sm:mb-7">
-          <div>
-            <h2
-              id="life-at-new-life-heading"
-              className="text-[clamp(1.75rem,2.6vw,2.25rem)] leading-tight font-medium tracking-tight"
-            >
-              Life at New Life
-            </h2>
-          </div>
+        <div className="mb-4 text-center sm:mb-6">
+          <p className="mb-2 text-xs font-semibold tracking-widest text-white/90 uppercase">
+            Inside the clinic
+          </p>
+          <h2
+            id="life-at-new-life-heading"
+            className="text-[clamp(1.625rem,3vw,2.25rem)] leading-tight font-semibold tracking-tight"
+          >
+            Life at New Life
+          </h2>
           <Link
             href="/videos"
-            className="inline-flex min-h-11 items-center gap-2 text-sm font-medium text-white underline underline-offset-4 hover:text-white focus-visible:outline-white"
+            className="mt-2 inline-flex min-h-11 items-center gap-2 rounded-md border border-white/60 px-4 text-sm font-semibold text-white hover:bg-white/10 focus-visible:outline-white"
           >
             View all videos
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              aria-hidden="true"
-            >
-              <path d="M4 12h16m-6-6 6 6-6 6" />
-            </svg>
+            <HeaderArrow />
           </Link>
         </div>
         <ContentRail
