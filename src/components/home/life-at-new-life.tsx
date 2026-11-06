@@ -16,7 +16,7 @@ export async function LifeAtNewLife() {
     <section
       id="life-at-new-life"
       aria-labelledby="life-at-new-life-heading"
-      className="relative isolate scroll-mt-48 overflow-hidden bg-action py-10 text-white sm:py-12 lg:py-14"
+      className="relative isolate scroll-mt-28 overflow-hidden bg-ink py-10 text-white sm:py-14 lg:scroll-mt-48 lg:py-16"
     >
       <svg
         className="pointer-events-none absolute -right-10 -bottom-10 -z-10 w-[32rem] opacity-[0.06]"
@@ -31,11 +31,8 @@ export async function LifeAtNewLife() {
         <path d="M0 140h120l25-40 30 80 35-120 35 80h155" />
       </svg>
       <Container>
-        <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-x-4 gap-y-1 sm:mb-7">
           <div>
-            <p className="mb-3 text-xs font-medium tracking-[0.12em] text-white/80 uppercase">
-              A closer look
-            </p>
             <h2
               id="life-at-new-life-heading"
               className="text-[clamp(1.75rem,2.6vw,2.25rem)] leading-tight font-medium tracking-tight"

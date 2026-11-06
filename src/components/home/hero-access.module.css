@@ -1,0 +1,61 @@
+.heading {
+  display: none;
+}
+
+@media (width < 40rem) {
+  .booking {
+    padding-block: 1.75rem 2rem;
+    scroll-margin-top: 6rem;
+    background: radial-gradient(
+      ellipse at top,
+      var(--color-primary-soft-hover),
+      var(--color-primary-soft) 65%
+    );
+  }
+
+  .heading {
+    display: block;
+    margin-block-end: 1.25rem;
+    color: var(--color-text);
+    font-size: clamp(1.75rem, 7.5vw, 2.75rem);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+    line-height: 1.1;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .form {
+    box-shadow: var(--shadow-md);
+  }
+
+  .form input,
+  .form select,
+  .submit {
+    font-size: 1rem;
+  }
+
+  .submit {
+    margin-block-start: 0.25rem;
+  }
+
+  .shortcuts {
+    gap: 0.5rem;
+    margin-block-start: 1.25rem;
+  }
+
+  .shortcuts a > span:first-of-type {
+    font-size: 0.8125rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (23.75rem <= width < 40rem) {
+  .contactFields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shortcuts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -7,6 +7,8 @@ import { getCareRequestHref } from '@/lib/care-request';
 import { Button } from '@/components/ui/button';
 import { ButtonLink } from '@/components/ui/button-link';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { cn } from '@/lib/cn';
+import styles from './doctor-card.module.css';
 
 export function DoctorCard({
   doctor,
@@ -15,9 +17,10 @@ export function DoctorCard({
 }: {
   doctor: Doctor;
   headingLevel?: 2 | 3;
-  variant?: 'default' | 'portrait';
+  variant?: 'default' | 'portrait' | 'featured';
 }) {
   const Heading = headingLevel === 3 ? 'h3' : 'h2';
+  const featured = variant === 'featured';
   return (
     <article
       aria-labelledby={`doctor-${doctor.id}`}
@@ -54,13 +57,15 @@ export function DoctorCard({
           </div>
         </>
       ) : (
-        <div className="flex-1 p-5 sm:p-6">
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <span className="text-[10px] font-medium tracking-[0.06em] text-muted uppercase">
-              Sample profile
-            </span>
-            <span aria-hidden="true" className="h-px w-10 bg-action/30" />
-          </div>
+        <div className={cn('flex-1 p-5 sm:p-6', featured && styles.summary)}>
+          {!featured && (
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <span className="text-[10px] font-medium tracking-[0.06em] text-muted uppercase">
+                Sample profile
+              </span>
+              <span aria-hidden="true" className="h-px w-10 bg-action/30" />
+            </div>
+          )}
           <div className="flex items-start gap-4">
             <Image
               src={doctor.image}
@@ -72,7 +77,10 @@ export function DoctorCard({
               width={160}
               height={160}
               sizes="80px"
-              className="size-20 shrink-0 rounded-md border border-line bg-soft object-cover object-top"
+              className={cn(
+                'size-20 shrink-0 rounded-md border border-line bg-soft object-cover object-top',
+                featured && styles.photo,
+              )}
             />
             <div className="min-w-0">
               <Heading
@@ -84,31 +92,49 @@ export function DoctorCard({
               <p className="mt-2 text-sm leading-relaxed text-action">
                 {doctor.specialty}
               </p>
+              {featured && !doctor.publishedByClinic && (
+                <span className={styles.badge}>Sample profile</span>
+              )}
             </div>
           </div>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {doctor.interests.map((interest) => (
-              <span
-                key={interest}
-                className="rounded-sm border border-line bg-panel px-2 py-1 text-[11px] leading-relaxed text-muted"
-              >
-                {interest}
-              </span>
-            ))}
-          </div>
-          <p className="mt-6 border-t border-line pt-4 text-xs text-muted">
+          {!featured && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {doctor.interests.map((interest) => (
+                <span
+                  key={interest}
+                  className="rounded-sm border border-line bg-panel px-2 py-1 text-[11px] leading-relaxed text-muted"
+                >
+                  {interest}
+                </span>
+              ))}
+            </div>
+          )}
+          <p
+            className={cn(
+              'mt-6 border-t border-line pt-4 text-xs text-muted',
+              featured && styles.location,
+            )}
+          >
             New Life Health Care <span aria-hidden="true">·</span> Imadol,
             Lalitpur
           </p>
         </div>
       )}
-      <div className="grid grid-cols-2 border-t border-line">
+      <div
+        className={cn(
+          'grid grid-cols-2 border-t border-line',
+          featured && styles.actions,
+        )}
+      >
         <Dialog>
           <DialogTrigger asChild>
             <Button
               variant="ghost"
               aria-label={`View profile of ${doctor.name}`}
-              className="h-full rounded-none px-3 py-4 text-xs"
+              className={cn(
+                'h-full rounded-none px-3 py-4 text-xs',
+                featured && styles.profile,
+              )}
             >
               View profile
               <span className="sr-only"> of {doctor.name}</span>
@@ -116,16 +142,23 @@ export function DoctorCard({
           </DialogTrigger>
           <DialogContent
             title={doctor.name}
-            description="Sample profile — final clinic details pending"
+            description={
+              featured && doctor.publishedByClinic
+                ? 'New Life Health Care · Imadol, Lalitpur'
+                : 'Sample profile — final clinic details pending'
+            }
           >
             <p className="mb-5 text-sm font-medium text-action">
               {doctor.specialty}
             </p>
-            <p className="text-sm leading-relaxed text-muted">
-              This profile demonstrates the directory design. Qualifications,
-              professional registration, experience, consultation fees and
-              visiting hours will be added with the clinic’s confirmed details.
-            </p>
+            {(!featured || !doctor.publishedByClinic) && (
+              <p className="text-sm leading-relaxed text-muted">
+                This profile demonstrates the directory design. Qualifications,
+                professional registration, experience, consultation fees and
+                visiting hours will be added with the clinic’s confirmed
+                details.
+              </p>
+            )}
             <div className="mt-6 flex flex-wrap gap-2">
               {doctor.interests.map((interest) => (
                 <span
@@ -147,7 +180,10 @@ export function DoctorCard({
         <Link
           href={getCareRequestHref(doctor.careId)}
           aria-label={`Book an appointment for ${doctor.specialty}`}
-          className="flex items-center justify-center border-l border-line bg-accent-soft px-3 py-4 text-center text-xs font-semibold text-accent-strong hover:bg-accent-strong hover:text-on-accent"
+          className={cn(
+            'flex items-center justify-center border-l border-line bg-accent-soft px-3 py-4 text-center text-xs font-semibold text-accent-strong hover:bg-accent-strong hover:text-on-accent',
+            featured && styles.booking,
+          )}
         >
           Book an appointment
         </Link>

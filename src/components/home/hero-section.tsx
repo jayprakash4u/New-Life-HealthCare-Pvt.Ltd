@@ -5,7 +5,7 @@ import { contactConfig } from '@/config/contact';
 import { Container } from '@/components/ui/container';
 import { buttonStyles } from '@/components/ui/button-styles';
 import { HeroVideo } from './hero-video';
-import type { EditableCopy } from '@/config/admin-pages';
+import { homeHeroCopy, type EditableCopy } from '@/config/admin-pages';
 
 function Arrow() {
   return (
@@ -23,7 +23,11 @@ function Arrow() {
   );
 }
 
-export async function HeroSection({ copy }: { copy?: EditableCopy }) {
+export async function HeroSection({
+  copy = homeHeroCopy,
+}: {
+  copy?: EditableCopy;
+}) {
   return (
     <>
       <section
@@ -31,39 +35,42 @@ export async function HeroSection({ copy }: { copy?: EditableCopy }) {
         className="relative isolate overflow-hidden bg-ink text-white"
       >
         <HeroVideo />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-ink/75 lg:bg-transparent lg:bg-[linear-gradient(90deg,rgba(8,35,34,0.9)_0%,rgba(8,35,34,0.72)_42%,rgba(8,35,34,0.12)_100%)]"
-        />
-        <Container className="pointer-events-none relative z-10 flex min-h-[min(32rem,72svh)] items-center pt-10 pb-22 sm:py-14 sm:pb-22 lg:min-h-[clamp(29rem,62svh,35rem)] lg:py-18">
+        <Container className="pointer-events-none relative z-10 flex items-center max-sm:w-[calc(100%-2.5rem)] max-sm:pt-[clamp(10.5rem,48vw,16rem)] max-sm:pb-6 sm:min-h-[min(32rem,72svh)] sm:py-14 sm:pb-22 lg:min-h-[clamp(29rem,62svh,35rem)] lg:py-18">
           <div className="pointer-events-auto w-full min-w-0 max-w-xl">
-            <p className="mb-5 flex items-center gap-2 text-[10px] font-medium tracking-[0.1em] text-white/90 uppercase sm:mb-6 sm:gap-3 sm:text-xs">
+            <p className="mb-6 hidden items-center gap-3 text-xs font-medium tracking-[0.12em] text-white/90 uppercase sm:flex">
               <span
                 aria-hidden="true"
-                className="h-px w-6 shrink-0 bg-white/70 sm:w-9"
+                className="h-px w-9 shrink-0 bg-white/70"
               />
               Your care. Your neighbourhood.
             </p>
             <h1
               id="hero-heading"
-              className="text-[clamp(2rem,9.5vw,2.75rem)] leading-[1.08] font-medium tracking-[-0.04em] whitespace-pre-line sm:text-[clamp(2.75rem,5vw,4.5rem)]"
+              className="text-[clamp(2rem,8.5vw,3rem)] leading-[1.05] font-medium tracking-[-0.04em] whitespace-pre-line wrap-anywhere sm:text-[clamp(2.75rem,5vw,4.5rem)] sm:leading-[1.08]"
             >
-              {copy?.title ?? 'A new day.\nA healthier you.'}
+              {copy.title === homeHeroCopy.title ? (
+                <>
+                  <span className="sm:hidden">Care close to home</span>
+                  <span className="hidden sm:inline">{copy.title}</span>
+                </>
+              ) : (
+                copy.title
+              )}
             </h1>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/90 sm:mt-6 sm:text-lg">
-              {copy?.body ??
-                'Take the next step in your health with New Life Health Care. Here for you in Imadol, Lalitpur.'}
+            <p className="mt-6 hidden max-w-md text-lg leading-relaxed wrap-anywhere text-white/90 sm:block">
+              {copy.body}
             </p>
-            <div className="mt-6 grid grid-cols-1 gap-3 min-[440px]:flex min-[440px]:flex-wrap sm:mt-8">
+            <div className="mt-4 flex flex-wrap items-center gap-3 sm:mt-8">
               <Link
                 href="/#plan-your-visit"
                 className={buttonStyles(
                   'booking',
                   'md',
-                  'w-full gap-6 min-[440px]:w-auto',
+                  'gap-3 px-4 max-sm:border-white max-sm:bg-white max-sm:text-ink max-sm:hover:bg-soft max-sm:hover:text-ink max-sm:active:bg-soft sm:gap-6 sm:px-5',
                 )}
               >
-                Book an appointment
+                <span className="sm:hidden">Book a visit</span>
+                <span className="hidden sm:inline">Book an appointment</span>
                 <Arrow />
               </Link>
               <a
@@ -74,7 +81,7 @@ export async function HeroSection({ copy }: { copy?: EditableCopy }) {
                 className={buttonStyles(
                   'outline',
                   'md',
-                  'w-full border-white/60 bg-transparent text-white hover:bg-white/10 hover:text-white min-[440px]:w-auto',
+                  'hidden border-white/60 text-white hover:bg-white/10 hover:text-white sm:inline-flex',
                 )}
               >
                 Message on WhatsApp

@@ -78,7 +78,7 @@ export function ContentRail({
       className="min-w-0"
     >
       {!hideHeader && (
-        <div className="mb-6 flex items-center justify-between gap-5">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 sm:mb-7">
           <h2
             id={`${id}-heading`}
             className="text-[clamp(1.75rem,2.6vw,2.25rem)] leading-tight font-medium tracking-tight"
@@ -178,9 +178,6 @@ export function ContentRail({
                 <h3 className="text-base leading-snug font-semibold tracking-[-0.01em]">
                   {item.title}
                 </h3>
-                <p className="mt-auto pt-4 text-xs leading-relaxed text-muted">
-                  New Life Health Care
-                </p>
               </div>
             </Link>
           </li>

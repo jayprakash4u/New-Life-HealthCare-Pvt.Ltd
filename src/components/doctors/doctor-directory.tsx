@@ -50,7 +50,7 @@ export function DoctorDirectory({ doctors }: { doctors: readonly Doctor[] }) {
       className="bg-panel py-8 sm:py-10 lg:py-12"
     >
       <Container>
-        <div className="mb-6 grid items-end gap-4 rounded-lg border border-line bg-canvas p-4 sm:p-5 md:grid-cols-[minmax(0,1fr)_minmax(15rem,0.65fr)_auto]">
+        <div className="mb-6 grid items-end gap-4 rounded-md border border-line bg-canvas p-4 sm:p-5 md:grid-cols-[minmax(0,1fr)_minmax(15rem,0.65fr)_auto]">
           <div>
             <label
               htmlFor={searchId}
@@ -68,7 +68,7 @@ export function DoctorDirectory({ doctors }: { doctors: readonly Doctor[] }) {
                   setQuery(event.target.value);
                   setPage(1);
                 }}
-                className="pr-11 text-sm"
+                className="pr-11 text-base"
               />
               <svg
                 className="pointer-events-none absolute top-3.5 right-3.5 text-action"
@@ -127,7 +127,7 @@ export function DoctorDirectory({ doctors }: { doctors: readonly Doctor[] }) {
             <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {paginatedResults.map((doctor) => (
                 <li key={doctor.id} className="flex min-w-0">
-                  <DoctorCard doctor={doctor} />
+                  <DoctorCard doctor={doctor} variant="featured" />
                 </li>
               ))}
             </ul>

@@ -22,14 +22,18 @@ export type AdminPage = EditableCopy & {
   group: string;
 };
 
+export const homeHeroCopy = {
+  title: 'A new day.\nA healthier you.',
+  body: 'Take the next step in your health with New Life Health Care. Here for you in Imadol, Lalitpur.',
+};
+
 export const adminPages: readonly AdminPage[] = [
   {
     id: 'home',
     path: '/',
     label: 'Home',
     group: 'Pages',
-    title: 'A new day.\nA healthier you.',
-    body: 'Take the next step in your health with New Life Health Care. Here for you in Imadol, Lalitpur.',
+    ...homeHeroCopy,
   },
   {
     id: 'home-introduction',

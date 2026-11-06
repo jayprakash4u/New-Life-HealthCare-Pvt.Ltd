@@ -1,0 +1,107 @@
+@media (width < 40rem) {
+  :global(header:has([data-home-mobile-actions='home'])) ~ .footer {
+    .banner {
+      padding-block: 1.5rem;
+      background: var(--color-background);
+    }
+
+    .invitation {
+      gap: 1rem;
+      padding: 1.25rem;
+      border-color: transparent;
+      border-radius: var(--radius-md);
+      background: var(--color-text);
+    }
+
+    .eyebrow {
+      display: none;
+    }
+
+    .invitation h2 {
+      margin: 0;
+      color: white;
+      line-height: 1.25;
+    }
+
+    .invitation p {
+      margin-block-start: 0.5rem;
+      color: #d9e3e0;
+      font-size: 0.875rem;
+    }
+
+    .ctas {
+      gap: 0.5rem;
+    }
+
+    .ctas a {
+      min-height: 2.75rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+    }
+
+    .directory {
+      padding-block: 1.75rem;
+    }
+
+    .columns {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem 1rem;
+    }
+
+    .profile,
+    .contact {
+      grid-column: 1 / -1;
+    }
+
+    .profile img {
+      width: 7rem;
+    }
+
+    .profile p {
+      font-size: 0.875rem;
+    }
+
+    .hours {
+      max-width: none;
+      border-radius: var(--radius-md);
+    }
+
+    .hours > div:last-child {
+      font-size: 0.8125rem;
+    }
+
+    .links,
+    .contact {
+      border-top: 1px solid var(--color-border);
+      padding-block-start: 1rem;
+    }
+
+    .links ul {
+      margin-block-start: 0.25rem;
+    }
+
+    .links li {
+      margin: 0;
+    }
+
+    .links a {
+      display: flex;
+      min-height: 2.75rem;
+      align-items: center;
+      overflow-wrap: anywhere;
+      font-size: 0.8125rem;
+    }
+
+    .contact a {
+      display: inline-flex;
+      min-height: 2.75rem;
+      align-items: center;
+      overflow-wrap: anywhere;
+    }
+
+    .contact a[aria-label] {
+      min-width: 2.75rem;
+      border-radius: var(--radius-md);
+    }
+  }
+}

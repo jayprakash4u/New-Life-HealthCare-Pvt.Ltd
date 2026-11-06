@@ -5,17 +5,26 @@ import { HealthJournal } from '@/components/home/health-journal';
 import { LifeAtNewLife } from '@/components/home/life-at-new-life';
 import { ContentRail } from '@/components/home/content-rail';
 import { clinicVideos, healthArticles } from '@/config/journal';
+import { getClinicVideos } from '@/lib/content-library';
+import { getHomepageVisibility } from '@/lib/homepage-visibility';
+
+vi.mock('@/lib/content-library', () => ({ getClinicVideos: vi.fn() }));
+vi.mock('@/lib/homepage-visibility', () => ({
+  getHomepageVisibility: vi.fn(),
+}));
 
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
 
-it('links homepage articles and videos to their on-site destinations', () => {
+it('links homepage articles and videos to their on-site destinations', async () => {
+  vi.mocked(getClinicVideos).mockResolvedValue([...clinicVideos]);
+  vi.mocked(getHomepageVisibility).mockResolvedValue(new Map());
   render(
     <>
       <HealthJournal />
-      <LifeAtNewLife />
+      {await LifeAtNewLife()}
     </>,
   );
   for (const article of healthArticles) {

@@ -4,6 +4,7 @@ import { getHomepageVisibility } from '@/lib/homepage-visibility';
 import { DoctorCard } from '@/components/doctors/doctor-card';
 import { Container } from '@/components/ui/container';
 import { HeaderArrow } from '@/components/layout/header-icons';
+import styles from './our-doctors.module.css';
 
 export async function OurDoctors({ homepage = false }: { homepage?: boolean }) {
   const doctors = await getDoctors();
@@ -44,19 +45,26 @@ export async function OurDoctors({ homepage = false }: { homepage?: boolean }) {
           </Link>
         </div>
 
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <ul
+          role="list"
+          className={`grid gap-5 sm:grid-cols-2 lg:grid-cols-4 ${homepage && featuredDoctors.length > 1 ? styles.rail : ''}`}
+        >
           {featuredDoctors.map((doctor) => (
             <li
               key={doctor.id}
               id={doctor.id}
               className="flex min-w-0 scroll-mt-48"
             >
-              <DoctorCard doctor={doctor} headingLevel={3} variant="portrait" />
+              <DoctorCard
+                doctor={doctor}
+                headingLevel={3}
+                variant={homepage ? 'featured' : 'portrait'}
+              />
             </li>
           ))}
         </ul>
 
-        {doctors.length > 4 && (
+        {!homepage && doctors.length > 4 && (
           <div className="mt-10 flex justify-center">
             <Link
               href="/doctors"

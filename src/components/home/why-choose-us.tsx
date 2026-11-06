@@ -1,25 +1,31 @@
 import { Container } from '@/components/ui/container';
+import { CareIcon } from '@/components/ui/care-icon';
+import { HeaderMessage, HeaderPin } from '@/components/layout/header-icons';
 
 const reasons = [
   {
     title: 'Care in one place',
+    icon: <CareIcon name="consultation" size={22} />,
     description:
-      'Consultations, laboratory tests, ultrasound and pharmacy services at one clinic. Speak with our team about the care you need and the options available for your visit.',
+      'Consultations, laboratory tests, ultrasound and pharmacy services at one clinic.',
   },
   {
     title: 'For every generation',
+    icon: <CareIcon name="family" size={22} />,
     description:
-      'From child and family health to gynecology and senior checkups, New Life brings everyday healthcare closer to different members of your family.',
+      'From child and family health to gynecology and senior checkups, we care for different generations.',
   },
   {
     title: 'Close to home',
+    icon: <HeaderPin />,
     description:
-      'Located in Imadol, Lalitpur, our neighbourhood clinic gives you a local place to discuss a health concern, arrange a checkup or follow up on earlier care.',
+      'Located in Imadol, Lalitpur, our clinic is close by for checkups and follow-up visits.',
   },
   {
     title: 'A clear next step',
+    icon: <HeaderMessage />,
     description:
-      'Call or message our team to discuss the service you need, check consultation times and confirm the details. Know what to expect before you come to the clinic.',
+      'Call or message our team to check consultation times and prepare for your visit.',
   },
 ] as const;
 
@@ -28,7 +34,7 @@ export function WhyChooseUs() {
     <section
       id="why-new-life"
       aria-labelledby="why-new-life-heading"
-      className="scroll-mt-40 border-b border-line bg-canvas py-12 sm:py-14 lg:scroll-mt-48 lg:py-16"
+      className="scroll-mt-40 border-b border-line bg-panel py-10 sm:py-14 lg:scroll-mt-48 lg:py-16"
     >
       <Container>
         <h2
@@ -37,19 +43,26 @@ export function WhyChooseUs() {
         >
           Why choose New Life?
         </h2>
-        <div className="grid overflow-hidden rounded-sm sm:grid-cols-2 lg:grid-cols-4">
-          {reasons.map((reason, index) => (
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {reasons.map((reason) => (
             <article
               key={reason.title}
-              className={`px-7 py-8 text-white sm:px-8 sm:py-10 lg:min-h-72 lg:px-9 lg:py-11 ${index % 2 === 0 ? 'bg-action' : 'bg-action-hover'}`}
+              className="grid grid-cols-[2.5rem_minmax(0,1fr)] items-start gap-x-3 rounded-md border border-line bg-canvas p-4 lg:grid-cols-1 lg:gap-y-3 lg:p-6"
             >
-              <h3 className="min-h-[2.2em] max-w-[9ch] font-serif text-[1.625rem] leading-[1.1] font-normal tracking-[-0.025em] text-white">
-                {reason.title}
-              </h3>
-              <div aria-hidden="true" className="mt-4 h-px w-12 bg-white/80" />
-              <p className="mt-4 text-sm leading-[1.8] text-white/95">
-                {reason.description}
-              </p>
+              <span
+                aria-hidden="true"
+                className="flex size-10 items-center justify-center rounded-md bg-soft text-action"
+              >
+                {reason.icon}
+              </span>
+              <div>
+                <h3 className="font-semibold tracking-tight text-ink">
+                  {reason.title}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                  {reason.description}
+                </p>
+              </div>
             </article>
           ))}
         </div>

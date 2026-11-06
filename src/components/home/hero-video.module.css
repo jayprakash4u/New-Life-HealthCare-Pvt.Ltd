@@ -1,0 +1,14 @@
+@media (width < 40rem) {
+  .frame {
+    height: clamp(14rem, 63vw, 20rem);
+  }
+
+  .shade {
+    background-image: linear-gradient(
+      to top,
+      var(--color-ink) 5%,
+      color-mix(in srgb, var(--color-ink) 75%, transparent) 25%,
+      transparent 70%
+    );
+  }
+}

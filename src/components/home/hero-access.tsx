@@ -13,6 +13,7 @@ import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { CareIcon, type CareIconName } from '@/components/ui/care-icon';
 import { Toast } from '@/components/ui/toast';
+import styles from './hero-access.module.css';
 
 const shortcuts: Array<{
   title: string;
@@ -51,8 +52,8 @@ const shortcuts: Array<{
     icon: 'hearing',
   },
   {
-    title: 'Gastroenterology',
-    detail: 'Digestive care',
+    title: 'Digestive care',
+    detail: 'Gastroenterology',
     href: getCareRequestHref('gastroenterology'),
     icon: 'digestive',
   },
@@ -93,7 +94,9 @@ export function HeroAccess({
     try {
       const res = await submitEnquiry('Visit request', '', formData);
       if (res && (res.includes('received') || res.includes('sent'))) {
-        setToastMessage('Appointment request received! We will call to confirm.');
+        setToastMessage(
+          'Appointment request received! We will call to confirm.',
+        );
         setName('');
         setPhone('');
         setCare('');
@@ -112,7 +115,7 @@ export function HeroAccess({
     <section
       id="plan-your-visit"
       aria-label="Appointments and care options"
-      className="scroll-mt-36 border-b border-line bg-soft py-6 sm:py-8 lg:scroll-mt-48 lg:py-10"
+      className={`${styles.booking} scroll-mt-36 border-b border-line bg-soft py-6 sm:py-8 lg:scroll-mt-48 lg:py-10`}
     >
       {/* Top-Right Floating Success Toast */}
       <Toast
@@ -122,10 +125,11 @@ export function HeroAccess({
       />
 
       <Container>
+        <h2 className={styles.heading}>Book an appointment</h2>
         <form
           onSubmit={handleSubmit}
           aria-label="Request an appointment"
-          className="min-w-0 rounded-md border border-line bg-canvas p-4 shadow-sm sm:p-6"
+          className={`${styles.form} min-w-0 rounded-md border border-line bg-canvas p-4 shadow-sm sm:p-6`}
         >
           <input type="hidden" name="topic" value={selected?.title ?? ''} />
           <input
@@ -190,10 +194,39 @@ export function HeroAccess({
                 ))}
               </Select>
             </div>
+            <div
+              className={`${styles.contactFields} grid min-w-0 gap-3 sm:grid-cols-2 md:col-span-3 md:row-start-2`}
+            >
+              <label className="grid min-w-0 gap-1 text-sm font-medium">
+                Your name
+                <Input
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  autoComplete="name"
+                  required
+                  maxLength={100}
+                  placeholder="Full name"
+                />
+              </label>
+              <label className="grid min-w-0 gap-1 text-sm font-medium">
+                Phone number
+                <Input
+                  name="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  autoComplete="tel"
+                  required
+                  maxLength={32}
+                  placeholder="Mobile number"
+                />
+              </label>
+            </div>
             <Button
               type="submit"
               variant="primary"
-              className="min-h-14 w-full min-w-0 gap-2 px-3 text-sm sm:gap-3 sm:px-4 cursor-pointer"
+              className={`${styles.submit} min-h-14 w-full min-w-0 cursor-pointer gap-2 px-3 text-sm sm:gap-3 sm:px-4 md:col-start-3 md:row-start-1`}
               disabled={submitting}
             >
               {submitting ? (
@@ -238,33 +271,6 @@ export function HeroAccess({
               )}
             </Button>
           </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <label className="grid gap-1 text-sm font-medium">
-              Your name
-              <Input
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoComplete="name"
-                required
-                maxLength={100}
-                placeholder="Full name"
-              />
-            </label>
-            <label className="grid gap-1 text-sm font-medium">
-              Phone number
-              <Input
-                name="phone"
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                autoComplete="tel"
-                required
-                maxLength={32}
-                placeholder="Mobile number"
-              />
-            </label>
-          </div>
 
           {/* Inline Error Message (only if validation fails) */}
           {errorMessage && (
@@ -280,23 +286,23 @@ export function HeroAccess({
 
         <nav
           aria-label="Explore care options"
-          className="mt-4 grid grid-cols-2 gap-3 min-[480px]:grid-cols-3 sm:mt-6 lg:grid-cols-6 xl:gap-4"
+          className={`${styles.shortcuts} mt-4 grid grid-cols-2 gap-3 min-[480px]:grid-cols-3 sm:mt-6 lg:grid-cols-6 xl:gap-4`}
         >
           {shortcuts.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="group flex min-h-35 min-w-0 flex-col items-center justify-center rounded-md border border-line bg-canvas px-2 py-3 text-center text-ink transition-colors hover:border-action hover:bg-white hover:text-action sm:min-h-37 sm:px-3 sm:py-4"
+              className="group flex min-h-24 min-w-0 flex-col items-center justify-center rounded-md border border-line bg-canvas px-2 py-3 text-center text-ink transition-colors hover:border-action hover:bg-white hover:text-action sm:min-h-37 sm:px-3 sm:py-4"
             >
               <CareIcon
                 name={item.icon}
                 size={64}
-                className="mb-2 size-14 shrink-0 text-action sm:mb-2.5 sm:size-16"
+                className="mb-1.5 size-9 shrink-0 text-action sm:mb-2.5 sm:size-16"
               />
-              <span className="text-sm leading-snug font-semibold sm:text-[15px]">
+              <span className="text-sm leading-snug font-semibold wrap-anywhere sm:text-[15px]">
                 {item.title}
               </span>
-              <span className="mt-1.5 text-[11px] leading-snug text-muted sm:text-xs sm:leading-relaxed">
+              <span className="mt-1.5 hidden text-xs leading-relaxed text-muted sm:block">
                 {item.detail}
               </span>
             </Link>

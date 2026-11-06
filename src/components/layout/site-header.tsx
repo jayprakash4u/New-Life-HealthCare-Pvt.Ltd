@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import {
   contactLink,
   isNavigationActive,
@@ -19,6 +19,7 @@ import { ButtonLink } from '@/components/ui/button-link';
 import { Container } from '@/components/ui/container';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { DesktopNavigation } from './desktop-navigation';
+import { HomeMobileActions } from './home-mobile-actions';
 import {
   HeaderArrow,
   HeaderMessage,
@@ -33,6 +34,8 @@ export function SiteHeader({
 }) {
   const pathname = usePathname() ?? '/';
   const [menuOpen, setMenuOpen] = useState(false);
+  const hasMobileActions = pathname === '/' || pathname === '/doctors';
+  const MenuActions = hasMobileActions ? HomeMobileActions : Fragment;
   return (
     <>
       <a
@@ -41,9 +44,25 @@ export function SiteHeader({
       >
         Skip to content
       </a>
-      <header className="sticky top-0 z-30 bg-canvas shadow-sm">
-        <Container className="flex min-h-24 items-center justify-between gap-6 lg:min-h-29">
-          <div className="flex shrink-0 items-center gap-7 py-2.5">
+      <header
+        className={cn(
+          'sticky top-0 z-30 bg-canvas shadow-sm',
+          pathname === '/' && 'max-sm:border-b max-sm:border-line',
+        )}
+      >
+        <Container
+          className={cn(
+            'flex min-h-24 items-center justify-between gap-6 lg:min-h-29',
+            hasMobileActions && 'max-sm:min-h-20',
+            pathname === '/' && 'max-sm:min-h-[4.25rem]',
+          )}
+        >
+          <div
+            className={cn(
+              'flex shrink-0 items-center gap-7 py-2.5',
+              pathname === '/' && 'max-sm:py-0',
+            )}
+          >
             <Link
               href="/"
               aria-label="New Life Health Care — home"
@@ -55,7 +74,10 @@ export function SiteHeader({
                 width={599}
                 height={416}
                 priority
-                className="h-auto w-28 lg:w-32"
+                className={cn(
+                  'h-auto w-28 lg:w-32',
+                  hasMobileActions && 'max-sm:w-24',
+                )}
               />
             </Link>
             <p className="hidden border-l border-line py-2 pl-7 text-[17px] leading-snug font-medium text-ink xl:block">
@@ -136,30 +158,45 @@ export function SiteHeader({
             <a
               href={contactConfig.phone.href}
               aria-label={`Call ${contactConfig.phone.label}`}
-              className="inline-flex size-11 items-center justify-center rounded-md border border-line text-action hover:bg-soft"
+              className={cn(
+                'inline-flex size-11 items-center justify-center rounded-md border border-line text-action hover:bg-soft',
+                pathname === '/' &&
+                  'max-sm:w-auto max-sm:gap-2 max-sm:border-action max-sm:bg-action max-sm:px-3 max-sm:text-on-action max-sm:hover:bg-action-hover',
+              )}
             >
               <HeaderPhone />
+              {pathname === '/' && (
+                <span className="text-xs font-semibold sm:hidden">
+                  Call clinic
+                </span>
+              )}
             </a>
             <Drawer open={menuOpen} onOpenChange={setMenuOpen}>
-              <DrawerTrigger asChild>
-                <Button
-                  className="gap-3 px-3.5"
-                  aria-label="Open navigation menu"
-                >
-                  <span className="text-sm">Menu</span>
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    aria-hidden="true"
+              <MenuActions
+                {...(hasMobileActions
+                  ? { doctorsPage: pathname === '/doctors' }
+                  : {})}
+              >
+                <DrawerTrigger asChild>
+                  <Button
+                    className="gap-3 px-3.5"
+                    aria-label="Open navigation menu"
                   >
-                    <path d="M4 7h16M4 12h16M4 17h16" />
-                  </svg>
-                </Button>
-              </DrawerTrigger>
+                    <span className="text-sm">Menu</span>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 7h16M4 12h16M4 17h16" />
+                    </svg>
+                  </Button>
+                </DrawerTrigger>
+              </MenuActions>
               <DrawerContent
                 title="Explore New Life"
                 description="Care, with you at the centre."
@@ -270,36 +307,41 @@ export function SiteHeader({
             <DesktopNavigation pathname={pathname} additions={additions} />
           </Container>
         </div>
-        <div className="border-t border-line bg-panel lg:hidden">
-          <Container className="flex min-h-9 items-center justify-between gap-3 text-[11px] font-medium text-muted">
-            <span>Imadol, Lalitpur</span>
-            <a
-              href={contactConfig.whatsapp.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp us (opens in a new tab)"
-              className="inline-flex min-h-9 items-center gap-2 text-action"
-            >
-              WhatsApp us
-              <HeaderArrow />
-            </a>
-          </Container>
-        </div>
+        {!hasMobileActions && (
+          <div className="border-t border-line bg-panel lg:hidden">
+            <Container className="flex min-h-9 items-center justify-between gap-3 text-[11px] font-medium text-muted">
+              <span>Imadol, Lalitpur</span>
+              <a
+                href={contactConfig.whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp us (opens in a new tab)"
+                className="inline-flex min-h-9 items-center gap-2 text-action"
+              >
+                WhatsApp us
+                <HeaderArrow />
+              </a>
+            </Container>
+          </div>
+        )}
       </header>
-      <div
-        aria-label="Quick appointment booking"
-        role="region"
-        className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-canvas px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-sm lg:hidden"
-      >
-        <ButtonLink
-          href="/#plan-your-visit"
-          variant="booking"
-          className="w-full gap-4"
+      {!hasMobileActions && (
+        <div
+          data-mobile-booking
+          aria-label="Quick appointment booking"
+          role="region"
+          className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-canvas px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-sm lg:hidden"
         >
-          Book an appointment
-          <HeaderArrow />
-        </ButtonLink>
-      </div>
+          <ButtonLink
+            href="/#plan-your-visit"
+            variant="booking"
+            className="w-full gap-4"
+          >
+            Book an appointment
+            <HeaderArrow />
+          </ButtonLink>
+        </div>
+      )}
     </>
   );
 }

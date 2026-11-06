@@ -54,3 +54,21 @@ export function HeaderPin() {
     </Icon>
   );
 }
+
+export function HeaderDoctors() {
+  return (
+    <Icon>
+      <circle cx="12" cy="7" r="3" />
+      <path d="M5 21v-2a7 7 0 0 1 14 0v2M12 16v4m-2-2h4" />
+    </Icon>
+  );
+}
+
+export function HeaderCalendar() {
+  return (
+    <Icon>
+      <rect x="4" y="5" width="16" height="16" rx="2" />
+      <path d="M8 3v4m8-4v4M4 10h16m-11 5 2 2 4-4" />
+    </Icon>
+  );
+}
