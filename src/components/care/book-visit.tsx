@@ -4,18 +4,39 @@ import { useState } from 'react';
 import { submitEnquiry } from '@/app/enquiry-actions';
 import { Container } from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Toast } from '@/components/ui/toast';
+import { treatments } from '@/config/treatments';
+import { doctors, type Doctor } from '@/config/doctors';
 
-export function BookVisit({ careName }: { careName?: string }) {
+export function BookVisit({
+  careName,
+  roster = doctors,
+}: {
+  careName?: string;
+  roster?: readonly Doctor[];
+}) {
+  const initialCare = !careName
+    ? ''
+    : treatments.find((item) => item.title === careName)?.id ?? '';
+  const [care, setCare] = useState(initialCare);
+  const [doctorId, setDoctorId] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [date, setDate] = useState('');
 
+  const availableDoctors = roster.filter((doctor) => doctor.careId === care);
+  const selectedDoctor = availableDoctors.find(
+    (doctor) => doctor.id === doctorId,
+  );
+
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const selectedTreatment = treatments.find((item) => item.id === care);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,6 +49,8 @@ export function BookVisit({ careName }: { careName?: string }) {
       const res = await submitEnquiry('Visit request', '', formData);
       if (res && (res.includes('received') || res.includes('sent'))) {
         setToastMessage('Appointment request received!');
+        setCare('');
+        setDoctorId('');
         setName('');
         setPhone('');
         setEmail('');
@@ -74,11 +97,19 @@ export function BookVisit({ careName }: { careName?: string }) {
             </p>
           </div>
           <form onSubmit={handleSubmit}>
-            <input type="hidden" name="topic" value={careName ?? ''} />
+            <input type="hidden" name="topic" value={selectedTreatment?.title ?? ''} />
             <input
               type="hidden"
               name="message"
-              value={date ? 'Preferred date: ' + date : ''}
+              value={
+                selectedDoctor
+                  ? (selectedDoctor.publishedByClinic
+                      ? 'Preferred doctor: '
+                      : 'Preferred sample profile: ') + selectedDoctor.name
+                  : date
+                    ? 'Preferred date: ' + date
+                    : ''
+              }
             />
 
             {/* Inline Error Message (only on invalid input) */}
@@ -89,6 +120,62 @@ export function BookVisit({ careName }: { careName?: string }) {
             )}
 
             <div className="grid gap-4 sm:grid-cols-6">
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="visit-care"
+                  className="mb-2 block text-xs font-medium"
+                >
+                  Treatment <span className="text-muted">(required)</span>
+                </label>
+                <Select
+                  id="visit-care"
+                  required
+                  value={care}
+                  onChange={(event) => {
+                    setCare(event.target.value);
+                    setDoctorId('');
+                  }}
+                  className="min-h-14 min-w-0 max-w-full truncate border-line bg-panel py-3.5 pr-8 pl-3 text-sm sm:pl-4"
+                >
+                  <option value="" disabled>
+                    Select treatment
+                  </option>
+                  {treatments.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.title}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="sm:col-span-3">
+                <label
+                  htmlFor="visit-doctor"
+                  className="mb-2 block text-xs font-medium"
+                >
+                  Preferred doctor <span className="text-muted">(optional)</span>
+                </label>
+                <Select
+                  id="visit-doctor"
+                  value={doctorId}
+                  onChange={(event) => setDoctorId(event.target.value)}
+                  disabled={!availableDoctors.length}
+                  className="min-h-14 min-w-0 max-w-full truncate border-line bg-panel py-3.5 pr-8 pl-3 text-sm sm:pl-4"
+                >
+                  <option value="">
+                    {!care
+                      ? 'Choose a treatment first'
+                      : !availableDoctors.length
+                        ? 'Our team will guide you'
+                        : 'select doctor'}
+                  </option>
+                  {availableDoctors.map((doctor) => (
+                    <option key={doctor.id} value={doctor.id}>
+                      {doctor.name}
+                      {!doctor.publishedByClinic && ' (sample)'}
+                    </option>
+                  ))}
+                </Select>
+              </div>
               <div className="sm:col-span-3">
                 <label
                   htmlFor="visit-name"

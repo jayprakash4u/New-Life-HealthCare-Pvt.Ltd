@@ -66,9 +66,7 @@ export function HeroAccess({
   initialCare?: string;
   roster?: readonly Doctor[];
 }) {
-  const [care, setCare] = useState(() =>
-    treatments.some((item) => item.id === initialCare) ? initialCare : '',
-  );
+  const [care, setCare] = useState(initialCare);
   const selected = treatments.find((item) => item.id === care);
   const [doctorId, setDoctorId] = useState('');
   const [name, setName] = useState('');
@@ -78,7 +76,6 @@ export function HeroAccess({
   const selectedDoctor = availableDoctors.find(
     (doctor) => doctor.id === doctorId,
   );
-
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -180,12 +177,12 @@ export function HeroAccess({
                 className="min-h-14 min-w-0 max-w-full truncate border-line bg-panel py-3.5 pr-8 pl-3 text-sm sm:pl-4"
               >
                 <option value="">
-                  {!care
-                    ? 'Choose a care area first'
-                    : !availableDoctors.length
-                      ? 'Our team will guide you'
-                      : 'Select doctor (optional)'}
-                </option>
+                    {!care
+                      ? 'Choose a treatment first'
+                      : !availableDoctors.length
+                        ? 'Our team will guide you'
+                        : 'select doctor'}
+                  </option>
                 {availableDoctors.map((doctor) => (
                   <option key={doctor.id} value={doctor.id}>
                     {doctor.name}
