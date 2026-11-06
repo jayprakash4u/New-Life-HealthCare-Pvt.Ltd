@@ -1,5 +1,5 @@
 @media (width < 40rem) {
-  :global(header:has([data-home-mobile-actions='home'])) ~ .footer {
+  :global([data-home-mobile-actions='home']) ~ .footer {
     .banner {
       padding-block: 1.5rem;
       background: var(--color-background);

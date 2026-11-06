@@ -20,7 +20,7 @@ export default async function PublicLayout({
       illustration: 'consultation',
     }));
   return (
-    <div className="flex min-h-dvh flex-col max-lg:has-[[data-home-mobile-actions]]:pb-[calc(3.5rem+max(0.375rem,env(safe-area-inset-bottom)))] max-lg:has-[>[data-mobile-booking]]:pb-[calc(4.25rem+max(0.75rem,env(safe-area-inset-bottom)))]">
+    <div className="flex min-h-dvh flex-col max-lg:overflow-x-clip max-lg:has-[[data-home-mobile-actions]]:pb-[calc(3.5rem+max(0.375rem,env(safe-area-inset-bottom)))] max-lg:has-[>[data-mobile-booking]]:pb-[calc(4.25rem+max(0.75rem,env(safe-area-inset-bottom)))]">
       <SiteHeader additions={additions} />
       <main id="main-content" tabIndex={-1} className="flex-1">
         {children}

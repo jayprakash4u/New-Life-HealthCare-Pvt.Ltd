@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { contactConfig } from '@/config/contact';
 import {
   HeaderCalendar,
@@ -16,8 +16,41 @@ export function HomeMobileActions({
   children: ReactNode;
   doctorsPage?: boolean;
 }) {
+  const actionsRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const actions = actionsRef.current;
+    const viewport = window.visualViewport;
+    if (!actions || !viewport) return;
+
+    let inset = 0;
+    function alignWithVisibleBottom() {
+      if (!actions || !viewport) return;
+      const bounds = actions.getBoundingClientRect();
+      // Recover the unshifted bottom because the previous inset moves the bar.
+      const visibleBottom = viewport.offsetTop + viewport.height;
+      const nextInset =
+        bounds.height > 0 && viewport.scale === 1
+          ? Math.max(0, Math.round(bounds.bottom + inset - visibleBottom))
+          : 0;
+      if (nextInset === inset) return;
+      inset = nextInset;
+      actions.style.setProperty('--mobile-actions-inset', `${inset}px`);
+    }
+
+    alignWithVisibleBottom();
+    viewport.addEventListener('resize', alignWithVisibleBottom);
+    viewport.addEventListener('scroll', alignWithVisibleBottom);
+    return () => {
+      viewport.removeEventListener('resize', alignWithVisibleBottom);
+      viewport.removeEventListener('scroll', alignWithVisibleBottom);
+      actions.style.removeProperty('--mobile-actions-inset');
+    };
+  }, []);
+
   return (
     <nav
+      ref={actionsRef}
       aria-label="Quick access"
       data-home-mobile-actions={doctorsPage ? 'doctors' : 'home'}
       className={styles.actions}

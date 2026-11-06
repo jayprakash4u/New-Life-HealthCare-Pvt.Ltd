@@ -3,6 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   experimental: { serverActions: { bodySizeLimit: '5mb' } },
   reactStrictMode: true,
+  devIndicators: false,
   poweredByHeader: false,
   async redirects() {
     return [

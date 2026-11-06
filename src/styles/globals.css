@@ -63,6 +63,17 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  @media (max-width: 1023.98px) {
+    html {
+      overflow-x: hidden;
+      overscroll-behavior-x: none;
+    }
+
+    body {
+      overflow-x: clip;
+    }
+  }
+
   h1,
   h2,
   h3,

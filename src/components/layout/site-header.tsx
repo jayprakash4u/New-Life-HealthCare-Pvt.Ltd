@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import {
   contactLink,
   isNavigationActive,
@@ -35,9 +35,26 @@ export function SiteHeader({
   const pathname = usePathname() ?? '/';
   const [menuOpen, setMenuOpen] = useState(false);
   const hasMobileActions = pathname === '/' || pathname === '/doctors';
-  const MenuActions = hasMobileActions ? HomeMobileActions : Fragment;
+  const menuTrigger = (
+    <DrawerTrigger asChild>
+      <Button className="gap-3 px-3.5" aria-label="Open navigation menu">
+        <span className="text-sm">Menu</span>
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          aria-hidden="true"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </Button>
+    </DrawerTrigger>
+  );
   return (
-    <>
+    <Drawer open={menuOpen} onOpenChange={setMenuOpen}>
       <a
         href="#main-content"
         className="fixed top-3 left-3 z-[60] -translate-y-24 rounded-md bg-ink px-5 py-3 text-sm font-semibold text-on-action focus:translate-y-0 focus:text-on-action"
@@ -171,135 +188,109 @@ export function SiteHeader({
                 </span>
               )}
             </a>
-            <Drawer open={menuOpen} onOpenChange={setMenuOpen}>
-              <MenuActions
-                {...(hasMobileActions
-                  ? { doctorsPage: pathname === '/doctors' }
-                  : {})}
-              >
-                <DrawerTrigger asChild>
-                  <Button
-                    className="gap-3 px-3.5"
-                    aria-label="Open navigation menu"
-                  >
-                    <span className="text-sm">Menu</span>
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.7"
-                      aria-hidden="true"
+            {!hasMobileActions && menuTrigger}
+            <DrawerContent
+              title="Explore New Life"
+              description="Care, with you at the centre."
+              className="w-[min(100vw,26rem)]"
+            >
+              <nav aria-label="Mobile navigation" className="-mt-2">
+                {withAddedCare(navigation, additions).map((item) =>
+                  'children' in item ? (
+                    <details
+                      key={item.label}
+                      className="group border-b border-line"
                     >
-                      <path d="M4 7h16M4 12h16M4 17h16" />
-                    </svg>
-                  </Button>
-                </DrawerTrigger>
-              </MenuActions>
-              <DrawerContent
-                title="Explore New Life"
-                description="Care, with you at the centre."
-                className="w-[min(100vw,26rem)]"
-              >
-                <nav aria-label="Mobile navigation" className="-mt-2">
-                  {withAddedCare(navigation, additions).map((item) =>
-                    'children' in item ? (
-                      <details
-                        key={item.label}
-                        className="group border-b border-line"
-                      >
-                        <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-ink marker:content-none hover:text-action [&::-webkit-details-marker]:hidden">
-                          {item.label}
-                          <svg
-                            className="text-action transition-transform group-open:rotate-180"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            aria-hidden="true"
-                          >
-                            <path d="m3 6 5 5 5-5" />
-                          </svg>
-                        </summary>
-                        <div className="grid border-t border-line bg-panel px-3 py-2">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              onClick={() => setMenuOpen(false)}
-                              className="flex min-h-12 items-center justify-between gap-3 py-3 text-sm font-medium text-ink hover:text-action"
-                            >
-                              {child.label}
-                              <HeaderArrow className="shrink-0 text-action" />
-                            </Link>
-                          ))}
-                        </div>
-                      </details>
-                    ) : (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        onClick={() => setMenuOpen(false)}
-                        aria-current={
-                          isNavigationActive(pathname, item.href)
-                            ? 'page'
-                            : undefined
-                        }
-                        className={cn(
-                          'flex min-h-16 items-center justify-between gap-4 border-b border-line py-4 text-base font-semibold hover:text-action',
-                          isNavigationActive(pathname, item.href)
-                            ? 'text-action'
-                            : 'text-ink',
-                        )}
-                      >
+                      <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-ink marker:content-none hover:text-action [&::-webkit-details-marker]:hidden">
                         {item.label}
-                        <HeaderArrow className="text-action" />
-                      </Link>
-                    ),
-                  )}
-                  <ButtonLink
-                    href="/#plan-your-visit"
-                    variant="booking"
-                    onClick={() => setMenuOpen(false)}
-                    className="mt-6 w-full justify-between"
-                  >
-                    Book an appointment
-                    <HeaderArrow />
-                  </ButtonLink>
-                  <ButtonLink
-                    href={contactLink.href}
-                    onClick={() => setMenuOpen(false)}
-                    variant="outline"
-                    className="mt-3 w-full justify-between"
-                  >
-                    {contactLink.label}
-                    <HeaderArrow />
-                  </ButtonLink>
-                </nav>
-                <div className="mt-6 grid gap-3 text-sm">
-                  <a
-                    href={contactConfig.phone.href}
-                    className="flex min-h-11 items-center gap-3 text-action"
-                  >
-                    <HeaderPhone />
-                    Call {contactConfig.phone.label}
-                  </a>
-                  <a
-                    href={contactConfig.whatsapp.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex min-h-11 items-center gap-3 text-action"
-                    aria-label="WhatsApp our team (opens in a new tab)"
-                  >
-                    <HeaderMessage />
-                    WhatsApp our team
-                  </a>
-                </div>
-              </DrawerContent>
-            </Drawer>
+                        <svg
+                          className="text-action transition-transform group-open:rotate-180"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          aria-hidden="true"
+                        >
+                          <path d="m3 6 5 5 5-5" />
+                        </svg>
+                      </summary>
+                      <div className="grid border-t border-line bg-panel px-3 py-2">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setMenuOpen(false)}
+                            className="flex min-h-12 items-center justify-between gap-3 py-3 text-sm font-medium text-ink hover:text-action"
+                          >
+                            {child.label}
+                            <HeaderArrow className="shrink-0 text-action" />
+                          </Link>
+                        ))}
+                      </div>
+                    </details>
+                  ) : (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      aria-current={
+                        isNavigationActive(pathname, item.href)
+                          ? 'page'
+                          : undefined
+                      }
+                      className={cn(
+                        'flex min-h-16 items-center justify-between gap-4 border-b border-line py-4 text-base font-semibold hover:text-action',
+                        isNavigationActive(pathname, item.href)
+                          ? 'text-action'
+                          : 'text-ink',
+                      )}
+                    >
+                      {item.label}
+                      <HeaderArrow className="text-action" />
+                    </Link>
+                  ),
+                )}
+                <ButtonLink
+                  href="/#plan-your-visit"
+                  variant="booking"
+                  onClick={() => setMenuOpen(false)}
+                  className="mt-6 w-full justify-between"
+                >
+                  Book an appointment
+                  <HeaderArrow />
+                </ButtonLink>
+                <ButtonLink
+                  href={contactLink.href}
+                  onClick={() => setMenuOpen(false)}
+                  variant="outline"
+                  className="mt-3 w-full justify-between"
+                >
+                  {contactLink.label}
+                  <HeaderArrow />
+                </ButtonLink>
+              </nav>
+              <div className="mt-6 grid gap-3 text-sm">
+                <a
+                  href={contactConfig.phone.href}
+                  className="flex min-h-11 items-center gap-3 text-action"
+                >
+                  <HeaderPhone />
+                  Call {contactConfig.phone.label}
+                </a>
+                <a
+                  href={contactConfig.whatsapp.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-11 items-center gap-3 text-action"
+                  aria-label="WhatsApp our team (opens in a new tab)"
+                >
+                  <HeaderMessage />
+                  WhatsApp our team
+                </a>
+              </div>
+            </DrawerContent>
           </div>
         </Container>
         <div className="hidden bg-action lg:block">
@@ -325,7 +316,11 @@ export function SiteHeader({
           </div>
         )}
       </header>
-      {!hasMobileActions && (
+      {hasMobileActions ? (
+        <HomeMobileActions doctorsPage={pathname === '/doctors'}>
+          {menuTrigger}
+        </HomeMobileActions>
+      ) : (
         <div
           data-mobile-booking
           aria-label="Quick appointment booking"
@@ -342,6 +337,6 @@ export function SiteHeader({
           </ButtonLink>
         </div>
       )}
-    </>
+    </Drawer>
   );
 }

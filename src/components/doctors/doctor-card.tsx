@@ -137,7 +137,6 @@ export function DoctorCard({
               )}
             >
               View profile
-              <span className="sr-only"> of {doctor.name}</span>
             </Button>
           </DialogTrigger>
           <DialogContent
