@@ -1,5 +1,5 @@
 @media (width < 40rem) {
-  :global([data-home-mobile-actions='home']) ~ .footer {
+  :global([data-mobile-actions='home']) ~ .footer {
     --footer-text: #e6efed;
     --footer-muted: #b9ccca;
     --footer-rule: rgb(255 255 255 / 18%);

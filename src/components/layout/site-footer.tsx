@@ -244,7 +244,7 @@ export function SiteFooter() {
                 className="inline-flex"
               >
                 <Image
-                  src="/brand/new-life-health-care.png"
+                  src="/brand/new-life-logo-transparent.png"
                   alt={siteConfig.legalName}
                   width={599}
                   height={416}

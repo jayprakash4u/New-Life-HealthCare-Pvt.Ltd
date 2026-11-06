@@ -7,14 +7,14 @@ import {
   HeaderMessage,
   HeaderPhone,
 } from './header-icons';
-import styles from './home-mobile-actions.module.css';
+import styles from './mobile-actions.module.css';
 
-export function HomeMobileActions({
+export function MobileActions({
   children,
-  doctorsPage = false,
+  pathname,
 }: {
   children: ReactNode;
-  doctorsPage?: boolean;
+  pathname: string;
 }) {
   const actionsRef = useRef<HTMLElement>(null);
 
@@ -52,10 +52,13 @@ export function HomeMobileActions({
     <nav
       ref={actionsRef}
       aria-label="Quick access"
-      data-home-mobile-actions={doctorsPage ? 'doctors' : 'home'}
+      data-mobile-actions={pathname === '/' ? 'home' : ''}
       className={styles.actions}
     >
-      <Link href="/doctors" aria-current={doctorsPage ? 'page' : undefined}>
+      <Link
+        href="/doctors"
+        aria-current={pathname === '/doctors' ? 'page' : undefined}
+      >
         <HeaderDoctors />
         Doctors
       </Link>

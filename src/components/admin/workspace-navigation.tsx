@@ -416,7 +416,7 @@ export function WorkspaceNavigation({
         >
           <div className="relative size-9 overflow-hidden rounded-md bg-white p-1 shadow-xs">
             <Image
-              src="/brand/new-life-health-care.png"
+              src="/brand/new-life-logo-transparent.png"
               alt="New Life"
               fill
               className="object-contain p-0.5"
@@ -533,7 +533,7 @@ export function WorkspaceNavigation({
                 <div className="flex items-center gap-2.5">
                   <div className="relative size-8 overflow-hidden rounded-md bg-white p-1">
                     <Image
-                      src="/brand/new-life-health-care.png"
+                      src="/brand/new-life-logo-transparent.png"
                       alt="New Life"
                       fill
                       className="object-contain"

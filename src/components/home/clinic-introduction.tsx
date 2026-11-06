@@ -2,99 +2,74 @@ import { readPageOverride } from '@/lib/admin-content';
 import Image from 'next/image';
 import Link from 'next/link';
 import { clinicFacts } from '@/config/clinic-facts';
+import { HeaderArrow } from '@/components/layout/header-icons';
 import { Container } from '@/components/ui/container';
-import { buttonStyles } from '@/components/ui/button-styles';
 
 export async function ClinicIntroduction() {
   const copy = await readPageOverride('home-introduction');
+
   return (
     <section
       aria-labelledby="clinic-introduction-heading"
-      className="bg-canvas py-10 sm:py-14 lg:py-16"
+      className="border-y border-line bg-panel py-8 sm:py-12 lg:py-16"
     >
-      <Container className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-x-12">
-        <div className="relative aspect-[16/9] overflow-hidden rounded-md bg-soft lg:aspect-[4/3]">
-          <Image
-            src={copy?.image ?? '/brand/hero-poster.jpg'}
-            alt={
-              copy?.image
-                ? (copy.imageAlt ?? '')
-                : 'Reception at New Life Health Care'
-            }
-            fill
-            sizes="(min-width: 1024px) 48vw, 92vw"
-            className="object-cover object-center"
-          />
-        </div>
-        <div className="max-w-2xl">
-          <p className="mb-4 text-xs font-semibold tracking-[0.12em] text-action uppercase">
-            Get to know New Life
+      <Container className="grid items-center gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-12">
+        <div className="min-w-0">
+          <p className="mb-2.5 text-xs font-semibold tracking-wide text-action uppercase">
+            Our clinic in Imadol
           </p>
           <h2
             id="clinic-introduction-heading"
-            className="text-[clamp(1.75rem,2.6vw,2.25rem)] leading-tight font-medium tracking-tight"
+            className="max-w-xl text-[clamp(1.75rem,4.5vw,2.75rem)] leading-tight font-semibold tracking-tight text-ink"
           >
-            {copy?.title ?? (
-              <>
-                Care that starts
-                <br />
-                <span className="text-action">with listening.</span>
-              </>
-            )}
+            {copy?.title ?? 'Care that starts with listening'}
           </h2>
-          {copy ? (
-            <p className="mt-5 max-w-xl whitespace-pre-wrap text-[15px] leading-7 text-muted">
-              {copy.body}
-            </p>
-          ) : (
-            <>
-              <p className="mt-5 max-w-xl text-[15px] leading-7 text-muted">
-                New Life Health Care brings consultations, diagnostics and
-                pharmacy support together in Imadol, Lalitpur.
-              </p>
-            </>
-          )}
+          <p className="mt-3 max-w-md text-[15px] leading-relaxed whitespace-pre-wrap text-muted">
+            {copy?.body ??
+              'Visit New Life Health Care in Imadol, Lalitpur, for consultations, diagnostics and pharmacy support.'}
+          </p>
           <Link
             href="/#plan-your-visit"
-            className={buttonStyles('primary', 'md', 'mt-7 gap-6')}
+            className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-action underline-offset-4 hover:underline"
           >
             Plan your visit
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              aria-hidden="true"
-            >
-              <path d="M4 12h16m-6-6 6 6-6 6" />
-            </svg>
+            <HeaderArrow />
           </Link>
         </div>
-        <aside
-          aria-label="New Life at a glance"
-          className="rounded-md border border-line bg-panel p-4 sm:p-6 lg:col-span-2"
-        >
-          <h3 className="mb-4 text-sm font-semibold text-ink">
-            New Life at a glance
-          </h3>
-          <dl className="grid grid-cols-3 divide-x divide-line">
+
+        <div className="min-w-0 overflow-hidden rounded-md border border-line bg-canvas">
+          <div className="relative aspect-[16/9] bg-soft">
+            <Image
+              src={copy?.image ?? '/brand/hero-poster.jpg'}
+              alt={
+                copy?.image
+                  ? (copy.imageAlt ?? '')
+                  : 'Reception at New Life Health Care'
+              }
+              fill
+              sizes="(min-width: 1024px) 50vw, 92vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <dl
+            aria-label="New Life at a glance"
+            className="grid grid-cols-3 divide-x divide-line border-t border-line py-3 sm:py-4"
+          >
             {clinicFacts.map((fact) => (
               <div
                 key={fact.label}
-                className="flex min-w-0 flex-col items-center px-1 text-center sm:px-3"
+                className="flex min-w-0 flex-col items-center gap-1 px-1 text-center sm:px-3"
               >
-                <dt className="mt-2 text-xs leading-snug text-muted">
+                <dt className="text-xs leading-snug text-muted">
                   {fact.label}
                 </dt>
-                <dd className="order-first text-2xl leading-none font-semibold text-action sm:text-4xl">
+                <dd className="order-first text-2xl leading-none font-semibold text-action sm:text-3xl">
                   {fact.value}
                 </dd>
               </div>
             ))}
           </dl>
-        </aside>
+        </div>
       </Container>
     </section>
   );

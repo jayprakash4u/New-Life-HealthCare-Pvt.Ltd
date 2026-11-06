@@ -32,7 +32,7 @@ export default async function AdminLogin({
       <div className="flex items-center justify-center px-6 py-12 sm:px-12">
         <div className="w-full max-w-sm">
           <Image
-            src="/brand/new-life-health-care.png"
+            src="/brand/new-life-logo-transparent.png"
             alt="New Life Health Care"
             width={126}
             height={88}

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  icons: { icon: '/brand/new-life-logo-transparent.png' },
 };
 
 export default function RootLayout({

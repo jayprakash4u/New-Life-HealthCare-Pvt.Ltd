@@ -19,7 +19,7 @@ import { ButtonLink } from '@/components/ui/button-link';
 import { Container } from '@/components/ui/container';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { DesktopNavigation } from './desktop-navigation';
-import { HomeMobileActions } from './home-mobile-actions';
+import { MobileActions } from './mobile-actions';
 import styles from './site-header.module.css';
 import {
   HeaderArrow,
@@ -35,7 +35,7 @@ export function SiteHeader({
 }) {
   const pathname = usePathname() ?? '/';
   const [menuOpen, setMenuOpen] = useState(false);
-  const hasMobileActions = pathname === '/' || pathname === '/doctors';
+  const compactMobileHeader = pathname === '/' || pathname === '/doctors';
   const menuTrigger = (
     <DrawerTrigger asChild>
       <Button className="gap-3 px-3.5" aria-label="Open navigation menu">
@@ -71,7 +71,7 @@ export function SiteHeader({
         <Container
           className={cn(
             'flex min-h-24 items-center justify-between gap-6 lg:min-h-29',
-            hasMobileActions && 'max-sm:min-h-20',
+            compactMobileHeader && 'max-sm:min-h-20',
             pathname === '/' && 'max-sm:min-h-[4.25rem]',
           )}
         >
@@ -87,14 +87,14 @@ export function SiteHeader({
               className="shrink-0"
             >
               <Image
-                src="/brand/new-life-health-care.png"
+                src="/brand/new-life-logo-transparent.png"
                 alt="New Life Health Care Pvt. Ltd."
                 width={599}
                 height={416}
                 priority
                 className={cn(
                   'h-auto w-28 lg:w-32',
-                  hasMobileActions && 'max-sm:w-24',
+                  compactMobileHeader && 'max-sm:w-24',
                 )}
               />
             </Link>
@@ -189,14 +189,13 @@ export function SiteHeader({
                 </span>
               )}
             </a>
-            {!hasMobileActions && menuTrigger}
             <DrawerContent
               side="left"
               title="Explore New Life"
               closeLabel="Close navigation menu"
               headingGraphic={
                 <Image
-                  src="/brand/new-life-health-care.png"
+                  src="/brand/new-life-logo-transparent.png"
                   alt="New Life Health Care"
                   width={90}
                   height={62}
@@ -309,7 +308,7 @@ export function SiteHeader({
             <DesktopNavigation pathname={pathname} additions={additions} />
           </Container>
         </div>
-        {!hasMobileActions && (
+        {!compactMobileHeader && (
           <div className="border-t border-line bg-panel lg:hidden">
             <Container className="flex min-h-9 items-center justify-between gap-3 text-[11px] font-medium text-muted">
               <span>Imadol, Lalitpur</span>
@@ -327,27 +326,7 @@ export function SiteHeader({
           </div>
         )}
       </header>
-      {hasMobileActions ? (
-        <HomeMobileActions doctorsPage={pathname === '/doctors'}>
-          {menuTrigger}
-        </HomeMobileActions>
-      ) : (
-        <div
-          data-mobile-booking
-          aria-label="Quick appointment booking"
-          role="region"
-          className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-canvas px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-sm lg:hidden"
-        >
-          <ButtonLink
-            href="/#plan-your-visit"
-            variant="booking"
-            className="w-full gap-4"
-          >
-            Book an appointment
-            <HeaderArrow />
-          </ButtonLink>
-        </div>
-      )}
+      <MobileActions pathname={pathname}>{menuTrigger}</MobileActions>
     </Drawer>
   );
 }
