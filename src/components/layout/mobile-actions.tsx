@@ -4,8 +4,8 @@ import { contactConfig } from '@/config/contact';
 import {
   HeaderCalendar,
   HeaderDoctors,
+  HeaderHome,
   HeaderMessage,
-  HeaderPhone,
 } from './header-icons';
 import styles from './mobile-actions.module.css';
 
@@ -56,15 +56,18 @@ export function MobileActions({
       className={styles.actions}
     >
       <Link
+        href="/"
+        aria-current={pathname === '/' ? 'page' : undefined}
+      >
+        <HeaderHome />
+        Home
+      </Link>
+      <Link
         href="/doctors"
         aria-current={pathname === '/doctors' ? 'page' : undefined}
       >
         <HeaderDoctors />
         Doctors
-      </Link>
-      <Link href="/#plan-your-visit" aria-label="Book an appointment">
-        <HeaderCalendar />
-        Book Appt
       </Link>
       <a
         href={contactConfig.whatsapp.href}
@@ -76,10 +79,10 @@ export function MobileActions({
         <HeaderMessage />
         Chat
       </a>
-      <a href={contactConfig.phone.href}>
-        <HeaderPhone />
-        Call Us
-      </a>
+      <Link href="/#plan-your-visit" aria-label="Book an appointment">
+        <HeaderCalendar />
+        Book Appt
+      </Link>
       {children}
     </nav>
   );

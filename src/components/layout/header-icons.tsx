@@ -72,3 +72,11 @@ export function HeaderCalendar() {
     </Icon>
   );
 }
+export function HeaderHome() {
+  return (
+    <Icon>
+      <path d="m3 11 9-7 9 7" />
+      <path d="M5 10v10h14V10" />
+    </Icon>
+  );
+}
