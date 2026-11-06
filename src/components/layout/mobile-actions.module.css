@@ -6,7 +6,7 @@
   .actions {
     position: fixed;
     right: 0;
-    bottom: var(--mobile-actions-inset, 0px);
+    bottom: var(--mobile-actions-offset, 0px);
     left: 0;
     max-width: 100dvw;
     z-index: 35;
@@ -17,6 +17,17 @@
     border-top: 1px solid var(--color-border);
     background: var(--color-background);
     box-shadow: 0 -4px 16px rgb(28 48 52 / 6%);
+    opacity: var(--mobile-actions-opacity, 1);
+    transition:
+      bottom 220ms ease,
+      opacity 180ms ease;
+    pointer-events: auto;
+  }
+
+  /* When the keyboard is open the bar lifts above it and fades out so it
+     never overlaps focused form fields. */
+  .actions[data-keyboard-open='true'] {
+    pointer-events: none;
   }
 
   .actions > :is(a, button) {
