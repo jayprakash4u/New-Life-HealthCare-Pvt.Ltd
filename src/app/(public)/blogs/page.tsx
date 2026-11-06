@@ -87,7 +87,7 @@ export default async function BlogsPage({
               totalPages={totalPages}
               totalItems={totalItems}
               pageSize={pageSize}
-              createPageUrl={(p, s) => (s ? `/blogs?page=${p}&pageSize=${s}` : `/blogs?page=${p}`)}
+              useUrlParams
               className="pt-6 border-t border-line"
             />
           </div>
