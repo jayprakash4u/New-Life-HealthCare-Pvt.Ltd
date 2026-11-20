@@ -178,7 +178,7 @@ export function HeroAccess({
               >
                 <option value="">
                     {!care
-                      ? 'Choose a treatment first'
+                      ? 'Choose doctor'
                       : !availableDoctors.length
                         ? 'Our team will guide you'
                         : 'select doctor'}

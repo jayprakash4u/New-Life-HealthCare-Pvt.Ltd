@@ -13,7 +13,7 @@ interface GalleryGridProps {
 export function GalleryGrid({ photos }: GalleryGridProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [page, setPage] = useState(1);
-  const pageSize = 9;
+  const pageSize = 12;
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -37,84 +37,90 @@ export function GalleryGrid({ photos }: GalleryGridProps) {
   }, [filteredPhotos, currentPage, pageSize]);
 
   return (
-    <div className="space-y-8">
-      {/* Category filter tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border/60 pb-4">
-        {categories.map((category) => {
-          const isActive = selectedCategory === category;
-          const count =
-            category === 'All'
-              ? photos.length
-              : photos.filter((p) => p.category === category).length;
-          return (
-            <button
-              key={category}
-              type="button"
-              onClick={() => {
-                setSelectedCategory(category);
-                setPage(1);
-              }}
-              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium transition-all cursor-pointer ${
-                isActive
-                  ? 'bg-action text-white shadow-sm'
-                  : 'bg-panel/70 text-muted hover:bg-panel hover:text-ink'
-              }`}
-            >
-              <span>{category}</span>
-              <span
-                className={`rounded-full px-1.5 py-0.2 text-[10px] font-semibold ${
-                  isActive
-                    ? 'bg-white/20 text-white'
-                    : 'bg-canvas text-muted'
-                }`}
-              >
-                {count}
-              </span>
-            </button>
-          );
-        })}
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col gap-4 border-b border-line pb-5 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 className="text-xl font-medium tracking-tight text-ink">
+            Explore our clinic
+          </h2>
+          <p
+            aria-live="polite"
+            aria-atomic="true"
+            className="mt-1 text-sm text-muted"
+          >
+            {filteredPhotos.length} photos · Select a photo to view it in full.
+          </p>
+        </div>
+        <label className="grid min-w-0 gap-1.5 text-xs font-semibold text-ink sm:w-64">
+          Browse by category
+          <select
+            value={selectedCategory}
+            onChange={(event) => {
+              setSelectedCategory(event.target.value);
+              setPage(1);
+            }}
+            className="min-h-11 w-full rounded-md border border-line bg-canvas px-3 text-sm font-normal text-ink"
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category === 'All' ? 'All photos' : category}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
-      {/* Gallery Cards Grid */}
-      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {!filteredPhotos.length && (
+        <p className="rounded-md border border-line bg-panel p-6 text-sm text-muted">
+          No photos are available yet.
+        </p>
+      )}
+      <ul className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-8 lg:grid-cols-3">
         {paginatedPhotos.map((photo) => (
           <li
             key={photo.id}
             id={photo.id}
-            className="group scroll-mt-48 overflow-hidden rounded-xl border border-border/40 bg-surface shadow-xs transition-all hover:border-action/30 hover:shadow-md"
+            className="group min-w-0 scroll-mt-48"
           >
             <Dialog>
               <DialogTrigger asChild>
                 <button
                   type="button"
-                  className="w-full text-left cursor-pointer"
+                  className="block w-full cursor-pointer rounded-md text-left"
                   aria-label={`Enlarge ${photo.title}`}
                 >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-panel">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md bg-panel">
                     <Image
                       src={photo.src}
                       alt={photo.alt}
                       fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-102"
+                      sizes="(min-width: 1024px) 33vw, 50vw"
+                      className="object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                    <span className="absolute bottom-3 right-3 rounded-md bg-black/60 px-2 py-1 text-[11px] font-medium text-white backdrop-blur-xs opacity-0 transition-opacity group-hover:opacity-100">
-                      View full photo
+                    <span
+                      aria-hidden="true"
+                      className="absolute right-2 bottom-2 flex size-8 items-center justify-center rounded-md bg-ink/80 text-white"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                      >
+                        <path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" />
+                      </svg>
                     </span>
                   </div>
-                  <div className="p-4 sm:p-5">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="inline-block rounded-md bg-action/10 px-2.5 py-0.5 text-[11px] font-semibold text-action uppercase tracking-wide">
-                        {photo.category}
-                      </span>
-                    </div>
-                    <h3 className="mt-2 text-base font-semibold text-ink line-clamp-1 group-hover:text-action transition-colors">
+                  <div className="pt-3">
+                    <span className="block text-[11px] leading-relaxed font-medium text-action sm:text-xs">
+                      {photo.category}
+                    </span>
+                    <h3 className="mt-1 text-sm leading-snug font-medium text-ink transition-colors group-hover:text-action sm:text-base">
                       {photo.title}
                     </h3>
-                    <p className="mt-1 text-xs text-muted line-clamp-2 leading-relaxed">
-                      {photo.alt}
-                    </p>
                   </div>
                 </button>
               </DialogTrigger>
@@ -151,7 +157,7 @@ export function GalleryGrid({ photos }: GalleryGridProps) {
         totalItems={filteredPhotos.length}
         pageSize={pageSize}
         onPageChange={setPage}
-        className="pt-4 border-t border-border/60"
+        className="border-t border-line pt-5"
       />
     </div>
   );

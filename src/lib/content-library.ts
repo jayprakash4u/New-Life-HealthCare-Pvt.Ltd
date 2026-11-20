@@ -126,13 +126,16 @@ export async function getDoctors() {
 
 export async function getLibraryItems(kind: LibraryKind) {
   if (kind === 'gallery')
-    return (await getGalleryPhotos()).map(({ id, title, alt, src }) => ({
-      id,
-      title,
-      detail: alt,
-      image: src,
-      href: '/gallery#' + id,
-    }));
+    return (await getGalleryPhotos()).map(
+      ({ id, title, alt, src, category }) => ({
+        id,
+        title,
+        detail: alt,
+        category,
+        image: src,
+        href: '/gallery#' + id,
+      }),
+    );
   if (kind === 'videos')
     return (await getClinicVideos()).map(
       ({ id, title, category, image, href }) => ({

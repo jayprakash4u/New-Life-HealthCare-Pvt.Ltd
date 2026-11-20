@@ -16,15 +16,21 @@ export default async function GalleryPage() {
   const copy = await getPageCopy('gallery');
 
   return (
-    <Container className="py-10 sm:py-14">
-      <PageIntro
-        title={copy.title ?? 'Clinic Photo Gallery'}
-        description={
-          copy.body ??
-          'Explore real photos of our clinic facilities, doctor consultation rooms, nursing care team, and patient visits in Imadol, Lalitpur.'
-        }
-      />
-      <GalleryGrid photos={galleryPhotos} />
-    </Container>
+    <>
+      <div className="border-b border-line bg-panel">
+        <Container className="py-7 sm:py-10 [&>header]:mb-0">
+          <PageIntro
+            title={copy.title ?? 'Clinic Photo Gallery'}
+            description={
+              copy.body ??
+              'Explore real photos of our clinic facilities, doctor consultation rooms, nursing care team, and patient visits in Imadol, Lalitpur.'
+            }
+          />
+        </Container>
+      </div>
+      <Container className="py-7 sm:py-10 lg:py-12">
+        <GalleryGrid photos={galleryPhotos} />
+      </Container>
+    </>
   );
 }

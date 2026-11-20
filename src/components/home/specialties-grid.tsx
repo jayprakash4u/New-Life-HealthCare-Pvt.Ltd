@@ -21,19 +21,16 @@ export function SpecialtiesGrid() {
       className="border-y border-line bg-panel py-10 sm:py-14 lg:py-16"
     >
       <Container>
-        <div className="mx-auto mb-6 max-w-xl text-center sm:mb-9">
-          <p className="mb-2 text-xs font-semibold tracking-widest text-action uppercase">
-            Care in Imadol
-          </p>
+        <div className="mb-5 sm:mb-7">
           <h2
             id="home-specialties-heading"
-            className="text-[clamp(1.75rem,3.5vw,2.5rem)] leading-tight font-semibold tracking-tight text-balance text-ink"
+            className="text-[clamp(1.75rem,2.6vw,2.25rem)] leading-tight font-medium tracking-tight text-ink"
           >
             Specialties &amp; services
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-            Explore consultations, diagnostics, and pharmacy services at New
-            Life Health Care.
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+            Consultations, diagnostics, and pharmacy services at New Life Health
+            Care.
           </p>
         </div>
 

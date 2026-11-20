@@ -11,12 +11,16 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { HomepageCheckbox } from './homepage-checkbox';
-import { DataTablePagination, DataTableToolbar } from '@/components/ui/data-table-pagination';
+import {
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/ui/data-table-pagination';
 
 export interface LibraryTableItem {
   id: string;
   title: string;
   detail: string;
+  category?: string;
   image: string;
   href: string;
 }
@@ -39,20 +43,25 @@ export function LibraryTable({
   onDelete,
 }: LibraryTableProps) {
   const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const categories = Array.from(
+    new Set(items.map((item) => item.category).filter(Boolean)),
+  );
 
   const filteredItems = useMemo(() => {
     const q = search.trim().toLowerCase();
-    if (!q) return items;
     return items.filter(
       (item) =>
-        item.title.toLowerCase().includes(q) ||
-        item.detail.toLowerCase().includes(q) ||
-        item.id.toLowerCase().includes(q),
+        (kind !== 'gallery' || !category || item.category === category) &&
+        (item.title.toLowerCase().includes(q) ||
+          item.detail.toLowerCase().includes(q) ||
+          item.id.toLowerCase().includes(q) ||
+          (item.category ?? '').toLowerCase().includes(q)),
     );
-  }, [items, search]);
+  }, [items, search, category, kind]);
 
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
   const currentPage = Math.min(page, totalPages);
@@ -78,7 +87,28 @@ export function LibraryTable({
           setPage(1);
         }}
         searchPlaceholder={`Search ${fromDoctors ? 'doctors' : kind}...`}
-      />
+      >
+        {kind === 'gallery' && (
+          <label className="flex min-w-0 items-center gap-2 text-xs text-muted">
+            Category
+            <select
+              value={category}
+              onChange={(event) => {
+                setCategory(event.target.value);
+                setPage(1);
+              }}
+              className="min-h-9 min-w-0 rounded-md border border-line bg-canvas px-2.5 py-1.5 text-xs text-ink"
+            >
+              <option value="">All categories</option>
+              {categories.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+      </DataTableToolbar>
 
       {/* Main Table */}
       <div className="overflow-hidden rounded-lg border border-line bg-canvas shadow-2xs">
@@ -94,7 +124,11 @@ export function LibraryTable({
                       : 'Image'}
                 </th>
                 <th scope="col" className="px-4 py-3">
-                  {kind === 'team' ? 'Specialty' : 'Category / Tag'}
+                  {kind === 'team'
+                    ? 'Specialty'
+                    : kind === 'gallery'
+                      ? 'Category & caption'
+                      : 'Category / Tag'}
                 </th>
                 {(kind === 'videos' || kind === 'team') && (
                   <th scope="col" className="px-4 py-3">
@@ -171,8 +205,14 @@ export function LibraryTable({
                       {/* Detail / Category */}
                       <td className="px-4 py-3.5">
                         <span className="rounded bg-soft px-2 py-0.5 text-xs text-action font-medium line-clamp-1 max-w-[200px]">
-                          {item.detail || 'General'}
+                          {(kind === 'gallery' ? item.category : item.detail) ||
+                            'General'}
                         </span>
+                        {kind === 'gallery' && (
+                          <p className="mt-1 max-w-[240px] text-[11px] leading-relaxed text-muted">
+                            {item.detail}
+                          </p>
+                        )}
                       </td>
 
                       {/* Homepage Checkbox */}
@@ -243,7 +283,9 @@ export function LibraryTable({
                                   }}
                                   className="bg-red-600 hover:bg-red-700 text-white"
                                 >
-                                  {deletingId === item.id ? 'Deleting...' : 'Confirm Delete'}
+                                  {deletingId === item.id
+                                    ? 'Deleting...'
+                                    : 'Confirm Delete'}
                                 </Button>
                               </div>
                             </DialogContent>
@@ -270,4 +312,3 @@ export function LibraryTable({
     </div>
   );
 }
-
